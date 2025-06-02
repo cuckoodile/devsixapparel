@@ -1,17 +1,19 @@
 import React from "react";
 import { Link, Outlet } from "react-router-dom";
 
+import NavigationText from "../../components/Texts/NavigationText";
+
 export default function Index_Admin() {
   return (
     <div className="size-full flex">
-      <div className="min-w-[10vw] text-white p-5 flex flex-col">
-        <Link to={`/admin/admins`}>Admin</Link>
-        <Link to={`/admin/shippers`}>Shipper</Link>
-        <Link to={`/admin/trackers`}>Tracker</Link>
-        <Link to={`/admin/productlists`}>Product List</Link>
+      <div className="min-w-[10vw] py-5 flex flex-col bg-secondary border-r border-border">
+        <NavigationText to={`/admin/admins`}>Admin</NavigationText>
+        <NavigationText to={`/admin/shippers`}>Shipper</NavigationText>
+        <NavigationText to={`/admin/trackers`}>Tracker</NavigationText>
+        <NavigationText to={`/admin/productlists`}>Product List</NavigationText>
       </div>
 
-      <div className="size-full flex justify-center bg-orange-200">
+      <div className="size-full flex justify-center">
         <Outlet />
       </div>
     </div>
