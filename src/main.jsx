@@ -19,6 +19,11 @@ import Trackers from "./pages/admins/trackers.jsx";
 
 const router = createBrowserRouter([
   {
+    element: <Auth />,
+    path: "login/",
+
+  },
+  {
     element: <App />,
     path: "/",
     children: [
@@ -26,12 +31,8 @@ const router = createBrowserRouter([
         element: <Index />,
         path: "/",
       },
-      {
-        // Merged login and register
-        element: <Auth />,
-        path: "login/",
-      },
-      { element: <Allproducts />, path: "allproducts/" },
+      { element: <Allproducts />,
+         path: "allproducts/" },
       {
         element: <Productdetails />,
         path: "productdetails/:id/",
