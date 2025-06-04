@@ -1,7 +1,7 @@
 import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
-
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import App from "./App.jsx";
 import Index from "./pages/index.jsx";
 import Auth from "./pages/auth.jsx";
@@ -21,7 +21,6 @@ const router = createBrowserRouter([
   {
     element: <Auth />,
     path: "login/",
-
   },
   {
     element: <App />,
@@ -31,8 +30,7 @@ const router = createBrowserRouter([
         element: <Index />,
         path: "/",
       },
-      { element: <Allproducts />,
-         path: "allproducts/" },
+      { element: <Allproducts />, path: "allproducts/" },
       {
         element: <Productdetails />,
         path: "productdetails/:id/",
@@ -83,6 +81,10 @@ const router = createBrowserRouter([
   },
 ]);
 
+const queryClient = new QueryClient();
+
 createRoot(document.getElementById("root")).render(
-  <RouterProvider router={router} />
+  <QueryClientProvider client={queryClient}>
+    <RouterProvider router={router} />
+  </QueryClientProvider>
 );

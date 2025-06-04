@@ -22,7 +22,6 @@ export default function Productdetails() {
   const [selectedSize, setSelectedSize] = useState('');
   const [selectedColor, setSelectedColor] = useState('');
   const [quantity, setQuantity] = useState(1);
-  const [isFavorite, setIsFavorite] = useState(false);
   const [activeTab, setActiveTab] = useState('description');
   const [showSizeGuide, setShowSizeGuide] = useState(false);
   const [addedToCart, setAddedToCart] = useState(false); 

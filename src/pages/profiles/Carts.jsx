@@ -1,21 +1,32 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { ShoppingCart, Trash2, ChevronRight } from "lucide-react";
+<<<<<<< HEAD
 import Popup1 from "../../components/modals/Popup1";
+=======
+import useGetCarts from "../../api/hooks/carts/useGetcarts";
+>>>>>>> 593332ca7f0478112dc607b3cbebb11896d88e9c
 
 export default function Carts() {
-  const paramsId = useParams().id;
+  const { data: cartsData, isLoading, isError } = useGetCarts();
+  // const paramsId = useParams().id;
   const [cartItems, setCartItems] = useState([]);
+<<<<<<< HEAD
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isCheckoutVisible, setIsCheckoutVisible] = useState(false);
+=======
+  // const [loading, setLoading] = useState(true);
+  // const [error, setError] = useState(null);
+>>>>>>> 593332ca7f0478112dc607b3cbebb11896d88e9c
 
-  useEffect(() => {
-    const fetchCartData = async () => {
-      try {
-        setLoading(true);
-        setError(null);
+  // useEffect(() => {
+  //   const fetchCartData = async () => {
+  //     try {
+  //       setLoading(true);
+  //       setError(null);
 
+<<<<<<< HEAD
         await new Promise((resolve) => setTimeout(resolve, 800));
 
         // Mock cart data with Philippine fashion items
@@ -47,9 +58,43 @@ export default function Carts() {
             },
           ],
         };
+=======
+  //       await new Promise((resolve) => setTimeout(resolve, 800));
 
-        const data = mockCart[paramsId] || [];
+  //       // Mock cart data with Philippine fashion items
+  //       const mockCart = {
+  //         2: [
+  //           {
+  //             id: "item001",
+  //             name: "Barong Tagalog (Piña Fabric)",
+  //             price: 4500.0,
+  //             quantity: 1,
+  //             image:
+  //               "https://i.pinimg.com/736x/85/12/9a/85129abc5df4216050f354b8188861a3.jpg",
+  //           },
+  //           {
+  //             id: "item002",
+  //             name: "Terno Dress (Modern Filipiniana)",
+  //             price: 6500.0,
+  //             quantity: 1,
+  //             image:
+  //               "https://i.pinimg.com/736x/85/12/9a/85129abc5df4216050f354b8188861a3.jpg",
+  //           },
+  //           {
+  //             id: "item003",
+  //             name: "Handwoven Banig Clutch",
+  //             price: 1200.0,
+  //             quantity: 2,
+  //             image:
+  //               "https://i.pinimg.com/736x/85/12/9a/85129abc5df4216050f354b8188861a3.jpg",
+  //           },
+  //         ],
+  //       };
+>>>>>>> 593332ca7f0478112dc607b3cbebb11896d88e9c
 
+  //       const data = mockCart[paramsId] || [];
+
+<<<<<<< HEAD
         setCartItems(data);
       } catch (err) {
         setError("Failed to load cart data.");
@@ -66,6 +111,24 @@ export default function Carts() {
       setError("No user ID provided.");
     }
   }, [paramsId]);
+=======
+  //       setCartItems(data);
+  //     } catch (err) {
+  //       setError("Failed to load cart data.");
+  //       console.error("Error fetching cart data:", err);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
+
+  //   if (paramsId) {
+  //     fetchCartData();
+  //   } else {
+  //     setLoading(false);
+  //     setError("No user ID provided.");
+  //   }
+  // }, [paramsId]);
+>>>>>>> 593332ca7f0478112dc607b3cbebb11896d88e9c
 
   const updateQuantity = (itemId, newQuantity) => {
     if (newQuantity < 1) return;
@@ -92,14 +155,11 @@ export default function Carts() {
   const tax = calculateTax(subtotal);
   const total = subtotal + tax;
 
-  if (loading) {
-    return (
-      <div className="h-screen w-screen bg-gray-900 flex items-center justify-center">
-        <div className="text-white text-xl">Loading cart...</div>
-      </div>
-    );
+  if (isLoading) {
+    return <h1>Loading Cart...</h1>;
   }
 
+<<<<<<< HEAD
   if (error) {
     return (
       <div className="h-screen w-screen bg-gray-900 flex flex-col items-center justify-center text-red-400 text-xl p-4">
@@ -109,6 +169,10 @@ export default function Carts() {
         </p>
       </div>
     );
+=======
+  if (isError) {
+    return <h1>Error Loading Cart</h1>;
+>>>>>>> 593332ca7f0478112dc607b3cbebb11896d88e9c
   }
 
   return (
@@ -135,7 +199,11 @@ export default function Carts() {
             <div className="space-y-6">
               {/* Cart Items */}
               <div className="space-y-4">
+<<<<<<< HEAD
                 {cartItems.map((item) => (
+=======
+                {cartsData?.map((item) => (
+>>>>>>> 593332ca7f0478112dc607b3cbebb11896d88e9c
                   <div
                     key={item.id}
                     className="flex items-center gap-4 p-4 bg-gray-700 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300"

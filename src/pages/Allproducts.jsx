@@ -12,181 +12,172 @@ import {
 } from "lucide-react";
 import ProductCard1 from "../components/cards/ProductCard1";
 
+import useGetProducts from "../api/hooks/products/useGetProducts"; // Adjust the import path as necessary
+import useGetCategories from "../api/hooks/categories/useGetCategories";
 export default function Allproducts() {
+  const { data: productsData, isLoading, isError } = useGetProducts();
+  const { data: categoriesData } = useGetCategories();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [sortBy, setSortBy] = useState("featured");
   const [viewMode, setViewMode] = useState("grid");
   const [showFilters, setShowFilters] = useState(false);
-  const [productsData, setProductsData] = useState([
-    {
-      id: 1,
-      name: "Barong Tagalog Modern Fit",
-      price: 2999,
-      originalPrice: 3499,
-      category: "traditional",
-      image:
-        "https://i.pinimg.com/736x/85/12/9a/85129abc5df4216050f354b8188861a3.jpg",
-      rating: 4.8,
-      reviews: 24,
-      isNew: true,
-      isFavorite: false,
-      description: "Elegant modern fit barong with intricate embroidery",
-    },
-    {
-      id: 2,
-      name: "Filipiniana Dress - Emerald",
-      price: 3499,
-      category: "traditional",
-      image:
-        "https://i.pinimg.com/736x/85/12/9a/85129abc5df4216050f354b8188861a3.jpg",
-      rating: 4.9,
-      reviews: 18,
-      isNew: true,
-      isFavorite: true,
-      description:
-        "Stunning emerald Filipiniana dress with traditional silhouette",
-    },
-    {
-      id: 3,
-      name: "Baybayin Print Tee",
-      price: 799,
-      category: "streetwear",
-      image:
-        "https://i.pinimg.com/736x/85/12/9a/85129abc5df4216050f354b8188861a3.jpg",
-      rating: 4.6,
-      reviews: 35,
-      isNew: false,
-      isFavorite: false,
-      description: "Contemporary t-shirt featuring ancient Baybayin script",
-    },
-    {
-      id: 4,
-      name: "Philippine Flag Hoodie",
-      price: 1499,
-      category: "streetwear",
-      image:
-        "https://i.pinimg.com/736x/85/12/9a/85129abc5df4216050f354b8188861a3.jpg",
-      rating: 4.7,
-      reviews: 42,
-      isNew: false,
-      isFavorite: true,
-      description: "Premium hoodie with subtle Philippine flag design",
-    },
-    {
-      id: 5,
-      name: "Mindanao Tribal Jacket",
-      price: 2299,
-      category: "traditional",
-      image:
-        "https://i.pinimg.com/736x/85/12/9a/85129abc5df4216050f354b8188861a3.jpg",
-      rating: 4.8,
-      reviews: 16,
-      isNew: true,
-      isFavorite: false,
-      description: "Hand-woven jacket inspired by Mindanao tribal patterns",
-    },
-    {
-      id: 6,
-      name: "Manila Streetwear Joggers",
-      price: 1199,
-      category: "streetwear",
-      image:
-        "https://i.pinimg.com/736x/85/12/9a/85129abc5df4216050f354b8188861a3.jpg",
-      rating: 4.5,
-      reviews: 28,
-      isNew: false,
-      isFavorite: false,
-      description: "Comfortable joggers with Manila-inspired graphics",
-    },
-    {
-      id: 7,
-      name: "Capiz Shell Earrings",
-      price: 599,
-      category: "accessories",
-      image:
-        "https://i.pinimg.com/736x/85/12/9a/85129abc5df4216050f354b8188861a3.jpg",
-      rating: 4.9,
-      reviews: 31,
-      isNew: false,
-      isFavorite: true,
-      description: "Delicate earrings crafted from authentic Capiz shells",
-    },
-    {
-      id: 8,
-      name: "Baro't Saya Set - Royal Blue",
-      price: 4299,
-      originalPrice: 4999,
-      category: "traditional",
-      image:
-        "https://i.pinimg.com/736x/85/12/9a/85129abc5df4216050f354b8188861a3.jpg",
-      rating: 4.8,
-      reviews: 12,
-      isNew: true,
-      isFavorite: false,
-      description: "Complete traditional Baro't Saya in royal blue",
-    },
-    {
-      id: 9,
-      name: "Jeepney Graphic Tee",
-      price: 899,
-      category: "streetwear",
-      image:
-        "https://i.pinimg.com/736x/85/12/9a/85129abc5df4216050f354b8188861a3.jpg",
-      rating: 4.4,
-      reviews: 47,
-      isNew: false,
-      isFavorite: false,
-      description: "Vibrant tee featuring iconic Filipino jeepney design",
-    },
-    {
-      id: 10,
-      name: "Banig Clutch Bag",
-      price: 899,
-      category: "accessories",
-      image:
-        "https://i.pinimg.com/736x/85/12/9a/85129abc5df4216050f354b8188861a3.jpg",
-      rating: 4.7,
-      reviews: 22,
-      isNew: false,
-      isFavorite: true,
-      description: "Handwoven clutch bag made from traditional banig",
-    },
-    {
-      id: 11,
-      name: "Terno Sleeve Blouse",
-      price: 1899,
-      category: "traditional",
-      image:
-        "https://i.pinimg.com/736x/85/12/9a/85129abc5df4216050f354b8188861a3.jpg",
-      rating: 4.6,
-      reviews: 19,
-      isNew: false,
-      isFavorite: false,
-      description: "Modern interpretation of the classic Terno sleeve",
-    },
-    {
-      id: 12,
-      name: "Pinoy Pride Bomber Jacket",
-      price: 2199,
-      category: "streetwear",
-      image:
-        "https://i.pinimg.com/736x/85/12/9a/85129abc5df4216050f354b8188861a3.jpg",
-      rating: 4.8,
-      reviews: 33,
-      isNew: true,
-      isFavorite: false,
-      description: "Premium bomber jacket with Filipino pride embroidery",
-    },
-  ]);
+  // const [productsData, setProductsData] = useState([
+  //   {
+  //     id: 1,
+  //     name: "Barong Tagalog Modern Fit",
+  //     price: 2999,
+  //     originalPrice: 3499,
+  //     category: "traditional",
+  //     image: "https://i.pinimg.com/736x/85/12/9a/85129abc5df4216050f354b8188861a3.jpg",
+  //     rating: 4.8,
+  //     reviews: 24,
+  //     isNew: true,
+  //     isFavorite: false,
+  //     description: "Elegant modern fit barong with intricate embroidery"
+  //   },
+  //   {
+  //     id: 2,
+  //     name: "Filipiniana Dress - Emerald",
+  //     price: 3499,
+  //     category: "traditional",
+  //     image: "https://i.pinimg.com/736x/85/12/9a/85129abc5df4216050f354b8188861a3.jpg",
+  //     rating: 4.9,
+  //     reviews: 18,
+  //     isNew: true,
+  //     isFavorite: true,
+  //     description: "Stunning emerald Filipiniana dress with traditional silhouette"
+  //   },
+  //   {
+  //     id: 3,
+  //     name: "Baybayin Print Tee",
+  //     price: 799,
+  //     category: "streetwear",
+  //     image: "https://i.pinimg.com/736x/85/12/9a/85129abc5df4216050f354b8188861a3.jpg",
+  //     rating: 4.6,
+  //     reviews: 35,
+  //     isNew: false,
+  //     isFavorite: false,
+  //     description: "Contemporary t-shirt featuring ancient Baybayin script"
+  //   },
+  //   {
+  //     id: 4,
+  //     name: "Philippine Flag Hoodie",
+  //     price: 1499,
+  //     category: "streetwear",
+  //     image: "https://i.pinimg.com/736x/85/12/9a/85129abc5df4216050f354b8188861a3.jpg",
+  //     rating: 4.7,
+  //     reviews: 42,
+  //     isNew: false,
+  //     isFavorite: true,
+  //     description: "Premium hoodie with subtle Philippine flag design"
+  //   },
+  //   {
+  //     id: 5,
+  //     name: "Mindanao Tribal Jacket",
+  //     price: 2299,
+  //     category: "traditional",
+  //     image: "https://i.pinimg.com/736x/85/12/9a/85129abc5df4216050f354b8188861a3.jpg",
+  //     rating: 4.8,
+  //     reviews: 16,
+  //     isNew: true,
+  //     isFavorite: false,
+  //     description: "Hand-woven jacket inspired by Mindanao tribal patterns"
+  //   },
+  //   {
+  //     id: 6,
+  //     name: "Manila Streetwear Joggers",
+  //     price: 1199,
+  //     category: "streetwear",
+  //     image: "https://i.pinimg.com/736x/85/12/9a/85129abc5df4216050f354b8188861a3.jpg",
+  //     rating: 4.5,
+  //     reviews: 28,
+  //     isNew: false,
+  //     isFavorite: false,
+  //     description: "Comfortable joggers with Manila-inspired graphics"
+  //   },
+  //   {
+  //     id: 7,
+  //     name: "Capiz Shell Earrings",
+  //     price: 599,
+  //     category: "accessories",
+  //     image: "https://i.pinimg.com/736x/85/12/9a/85129abc5df4216050f354b8188861a3.jpg",
+  //     rating: 4.9,
+  //     reviews: 31,
+  //     isNew: false,
+  //     isFavorite: true,
+  //     description: "Delicate earrings crafted from authentic Capiz shells"
+  //   },
+  //   {
+  //     id: 8,
+  //     name: "Baro't Saya Set - Royal Blue",
+  //     price: 4299,
+  //     originalPrice: 4999,
+  //     category: "traditional",
+  //     image: "https://i.pinimg.com/736x/85/12/9a/85129abc5df4216050f354b8188861a3.jpg",
+  //     rating: 4.8,
+  //     reviews: 12,
+  //     isNew: true,
+  //     isFavorite: false,
+  //     description: "Complete traditional Baro't Saya in royal blue"
+  //   },
+  //   {
+  //     id: 9,
+  //     name: "Jeepney Graphic Tee",
+  //     price: 899,
+  //     category: "streetwear",
+  //     image: "https://i.pinimg.com/736x/85/12/9a/85129abc5df4216050f354b8188861a3.jpg",
+  //     rating: 4.4,
+  //     reviews: 47,
+  //     isNew: false,
+  //     isFavorite: false,
+  //     description: "Vibrant tee featuring iconic Filipino jeepney design"
+  //   },
+  //   {
+  //     id: 10,
+  //     name: "Banig Clutch Bag",
+  //     price: 899,
+  //     category: "accessories",
+  //     image: "https://i.pinimg.com/736x/85/12/9a/85129abc5df4216050f354b8188861a3.jpg",
+  //     rating: 4.7,
+  //     reviews: 22,
+  //     isNew: false,
+  //     isFavorite: true,
+  //     description: "Handwoven clutch bag made from traditional banig"
+  //   },
+  //   {
+  //     id: 11,
+  //     name: "Terno Sleeve Blouse",
+  //     price: 1899,
+  //     category: "traditional",
+  //     image: "https://i.pinimg.com/736x/85/12/9a/85129abc5df4216050f354b8188861a3.jpg",
+  //     rating: 4.6,
+  //     reviews: 19,
+  //     isNew: false,
+  //     isFavorite: false,
+  //     description: "Modern interpretation of the classic Terno sleeve"
+  //   },
+  //   {
+  //     id: 12,
+  //     name: "Pinoy Pride Bomber Jacket",
+  //     price: 2199,
+  //     category: "streetwear",
+  //     image: "https://i.pinimg.com/736x/85/12/9a/85129abc5df4216050f354b8188861a3.jpg",
+  //     rating: 4.8,
+  //     reviews: 33,
+  //     isNew: true,
+  //     isFavorite: false,
+  //     description: "Premium bomber jacket with Filipino pride embroidery"
+  //   }
+  // ]);
   const [filteredProducts, setFilteredProducts] = useState([]);
 
-  const categories = [
-    { id: "all", name: "All Products", count: 24 },
-    { id: "traditional", name: "Heritage & Elegance", count: 8 },
-    { id: "streetwear", name: "Urban Filipino", count: 10 },
-    { id: "accessories", name: "Signature Touches", count: 6 },
-  ];
+  // const categories = [
+  //   { id: "all", name: "All Products", count: 24 },
+  //   { id: "traditional", name: "Heritage & Elegance", count: 8 },
+  //   { id: "streetwear", name: "Urban Filipino", count: 10 },
+  //   { id: "accessories", name: "Signature Touches", count: 6 },
+  // ];
 
   const sortOptions = [
     { value: "featured", label: "Featured" },
@@ -197,7 +188,7 @@ export default function Allproducts() {
   ];
 
   useEffect(() => {
-    let filtered = [...productsData];
+    let filtered = productsData ? [...productsData] : [];
 
     // Filter by category
     if (selectedCategory !== "all") {
@@ -244,20 +235,16 @@ export default function Allproducts() {
     console.log(`Navigating to: ${path}`);
   };
 
-  const toggleFavorite = (productId) => {
-    setProductsData((prevProducts) =>
-      prevProducts.map((product) =>
-        product.id === productId
-          ? { ...product, isFavorite: !product.isFavorite }
-          : product
-      )
-    );
-  };
-
   const addToCart = (productId) => {
     console.log(`Add to cart: ${productId}`);
   };
 
+  if (isLoading) {
+    return <h1>Loading...</h1>;
+  }
+  if (isError) {
+    return <h1>Error loading products</h1>;
+  }
   return (
     <div className="min-h-screen w-full bg-gray-900">
       {/* Header Section */}
@@ -326,7 +313,7 @@ export default function Allproducts() {
                     Categories
                   </h3>
                   <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-2 xl:grid-cols-4 gap-2">
-                    {categories.map((category) => (
+                    {categoriesData?.map((category) => (
                       <button
                         key={category.id}
                         onClick={() => setSelectedCategory(category.id)}
@@ -353,7 +340,7 @@ export default function Allproducts() {
                 <div>
                   <h3 className="text-white font-semibold mb-4">Sort By</h3>
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 gap-2">
-                    {sortOptions.map((option) => (
+                    {sortOptions?.map((option) => (
                       <button
                         key={option.value}
                         onClick={() => setSortBy(option.value)}
@@ -434,6 +421,19 @@ export default function Allproducts() {
                     </div>
                   ))}
             </div>
+
+            {/* No Results */}
+            {filteredProducts.length === 0 && (
+              <div className="text-center py-12">
+                <div className="text-gray-400 text-6xl mb-4">🔍</div>
+                <h3 className="text-white text-xl font-semibold mb-2">
+                  No products found
+                </h3>
+                <p className="text-gray-400">
+                  Try adjusting your search or filter criteria
+                </p>
+              </div>
+            )}
           </main>
         </div>
       </div>
