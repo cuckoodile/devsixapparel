@@ -15,9 +15,9 @@ export default function isAuthenticated(WrappedComponent) {
         return; // Ensure no cleanup function is returned
       }
       if (!prevLocation?.isLoggedIn) {
-        console.log("Verifying token: ", user);
+        // console.log("Verifying token: ", user);
         verifyToken(user).then((res) => {
-          console.log("response this", res);
+          console.log("Authenticated? ", res);
           if (!res) {
             sessionStorage.clear();
             navigate("/login");
