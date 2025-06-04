@@ -1,190 +1,206 @@
 import React, { useState, useEffect } from "react";
-import { Search, Filter, Grid, List, Star, Heart, Eye, ShoppingCart, ChevronDown } from "lucide-react";
-
+import {
+  Search,
+  Filter,
+  Grid,
+  List,
+  Star,
+  Heart,
+  Eye,
+  ShoppingCart,
+  ChevronDown,
+} from "lucide-react";
+import useGetProducts from "../api/hooks/products/useGetProducts"; // Adjust the import path as necessary
+import useGetCategories from "../api/hooks/categories/useGetCategories";
 export default function Allproducts() {
+  const { data: productsData, isLoading, isError } = useGetProducts();
+  const { data: categoriesData } = useGetCategories();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [sortBy, setSortBy] = useState("featured");
   const [viewMode, setViewMode] = useState("grid");
   const [showFilters, setShowFilters] = useState(false);
-  const [productsData, setProductsData] = useState([
-    {
-      id: 1,
-      name: "Barong Tagalog Modern Fit",
-      price: 2999,
-      originalPrice: 3499,
-      category: "traditional",
-      image: "https://i.pinimg.com/736x/85/12/9a/85129abc5df4216050f354b8188861a3.jpg",
-      rating: 4.8,
-      reviews: 24,
-      isNew: true,
-      isFavorite: false,
-      description: "Elegant modern fit barong with intricate embroidery"
-    },
-    {
-      id: 2,
-      name: "Filipiniana Dress - Emerald",
-      price: 3499,
-      category: "traditional",
-      image: "https://i.pinimg.com/736x/85/12/9a/85129abc5df4216050f354b8188861a3.jpg",
-      rating: 4.9,
-      reviews: 18,
-      isNew: true,
-      isFavorite: true,
-      description: "Stunning emerald Filipiniana dress with traditional silhouette"
-    },
-    {
-      id: 3,
-      name: "Baybayin Print Tee",
-      price: 799,
-      category: "streetwear",
-      image: "https://i.pinimg.com/736x/85/12/9a/85129abc5df4216050f354b8188861a3.jpg",
-      rating: 4.6,
-      reviews: 35,
-      isNew: false,
-      isFavorite: false,
-      description: "Contemporary t-shirt featuring ancient Baybayin script"
-    },
-    {
-      id: 4,
-      name: "Philippine Flag Hoodie",
-      price: 1499,
-      category: "streetwear",
-      image: "https://i.pinimg.com/736x/85/12/9a/85129abc5df4216050f354b8188861a3.jpg",
-      rating: 4.7,
-      reviews: 42,
-      isNew: false,
-      isFavorite: true,
-      description: "Premium hoodie with subtle Philippine flag design"
-    },
-    {
-      id: 5,
-      name: "Mindanao Tribal Jacket",
-      price: 2299,
-      category: "traditional",
-      image: "https://i.pinimg.com/736x/85/12/9a/85129abc5df4216050f354b8188861a3.jpg",
-      rating: 4.8,
-      reviews: 16,
-      isNew: true,
-      isFavorite: false,
-      description: "Hand-woven jacket inspired by Mindanao tribal patterns"
-    },
-    {
-      id: 6,
-      name: "Manila Streetwear Joggers",
-      price: 1199,
-      category: "streetwear",
-      image: "https://i.pinimg.com/736x/85/12/9a/85129abc5df4216050f354b8188861a3.jpg",
-      rating: 4.5,
-      reviews: 28,
-      isNew: false,
-      isFavorite: false,
-      description: "Comfortable joggers with Manila-inspired graphics"
-    },
-    {
-      id: 7,
-      name: "Capiz Shell Earrings",
-      price: 599,
-      category: "accessories",
-      image: "https://i.pinimg.com/736x/85/12/9a/85129abc5df4216050f354b8188861a3.jpg",
-      rating: 4.9,
-      reviews: 31,
-      isNew: false,
-      isFavorite: true,
-      description: "Delicate earrings crafted from authentic Capiz shells"  
-    },
-    {
-      id: 8,
-      name: "Baro't Saya Set - Royal Blue",
-      price: 4299,
-      originalPrice: 4999,
-      category: "traditional",
-      image: "https://i.pinimg.com/736x/85/12/9a/85129abc5df4216050f354b8188861a3.jpg",
-      rating: 4.8,
-      reviews: 12,
-      isNew: true,
-      isFavorite: false,
-      description: "Complete traditional Baro't Saya in royal blue"
-    },
-    {
-      id: 9,
-      name: "Jeepney Graphic Tee",
-      price: 899,
-      category: "streetwear",
-      image: "https://i.pinimg.com/736x/85/12/9a/85129abc5df4216050f354b8188861a3.jpg",
-      rating: 4.4,
-      reviews: 47,
-      isNew: false,
-      isFavorite: false,
-      description: "Vibrant tee featuring iconic Filipino jeepney design"
-    },
-    {
-      id: 10,
-      name: "Banig Clutch Bag",
-      price: 899,
-      category: "accessories",
-      image: "https://i.pinimg.com/736x/85/12/9a/85129abc5df4216050f354b8188861a3.jpg",
-      rating: 4.7,
-      reviews: 22,
-      isNew: false,
-      isFavorite: true,
-      description: "Handwoven clutch bag made from traditional banig"
-    },
-    {
-      id: 11,
-      name: "Terno Sleeve Blouse",
-      price: 1899,
-      category: "traditional",
-      image: "https://i.pinimg.com/736x/85/12/9a/85129abc5df4216050f354b8188861a3.jpg",
-      rating: 4.6,
-      reviews: 19,
-      isNew: false,
-      isFavorite: false,
-      description: "Modern interpretation of the classic Terno sleeve"
-    },
-    {
-      id: 12,
-      name: "Pinoy Pride Bomber Jacket",
-      price: 2199,
-      category: "streetwear",
-      image: "https://i.pinimg.com/736x/85/12/9a/85129abc5df4216050f354b8188861a3.jpg",
-      rating: 4.8,
-      reviews: 33,
-      isNew: true,
-      isFavorite: false,
-      description: "Premium bomber jacket with Filipino pride embroidery"
-    }
-  ]);
+  // const [productsData, setProductsData] = useState([
+  //   {
+  //     id: 1,
+  //     name: "Barong Tagalog Modern Fit",
+  //     price: 2999,
+  //     originalPrice: 3499,
+  //     category: "traditional",
+  //     image: "https://i.pinimg.com/736x/85/12/9a/85129abc5df4216050f354b8188861a3.jpg",
+  //     rating: 4.8,
+  //     reviews: 24,
+  //     isNew: true,
+  //     isFavorite: false,
+  //     description: "Elegant modern fit barong with intricate embroidery"
+  //   },
+  //   {
+  //     id: 2,
+  //     name: "Filipiniana Dress - Emerald",
+  //     price: 3499,
+  //     category: "traditional",
+  //     image: "https://i.pinimg.com/736x/85/12/9a/85129abc5df4216050f354b8188861a3.jpg",
+  //     rating: 4.9,
+  //     reviews: 18,
+  //     isNew: true,
+  //     isFavorite: true,
+  //     description: "Stunning emerald Filipiniana dress with traditional silhouette"
+  //   },
+  //   {
+  //     id: 3,
+  //     name: "Baybayin Print Tee",
+  //     price: 799,
+  //     category: "streetwear",
+  //     image: "https://i.pinimg.com/736x/85/12/9a/85129abc5df4216050f354b8188861a3.jpg",
+  //     rating: 4.6,
+  //     reviews: 35,
+  //     isNew: false,
+  //     isFavorite: false,
+  //     description: "Contemporary t-shirt featuring ancient Baybayin script"
+  //   },
+  //   {
+  //     id: 4,
+  //     name: "Philippine Flag Hoodie",
+  //     price: 1499,
+  //     category: "streetwear",
+  //     image: "https://i.pinimg.com/736x/85/12/9a/85129abc5df4216050f354b8188861a3.jpg",
+  //     rating: 4.7,
+  //     reviews: 42,
+  //     isNew: false,
+  //     isFavorite: true,
+  //     description: "Premium hoodie with subtle Philippine flag design"
+  //   },
+  //   {
+  //     id: 5,
+  //     name: "Mindanao Tribal Jacket",
+  //     price: 2299,
+  //     category: "traditional",
+  //     image: "https://i.pinimg.com/736x/85/12/9a/85129abc5df4216050f354b8188861a3.jpg",
+  //     rating: 4.8,
+  //     reviews: 16,
+  //     isNew: true,
+  //     isFavorite: false,
+  //     description: "Hand-woven jacket inspired by Mindanao tribal patterns"
+  //   },
+  //   {
+  //     id: 6,
+  //     name: "Manila Streetwear Joggers",
+  //     price: 1199,
+  //     category: "streetwear",
+  //     image: "https://i.pinimg.com/736x/85/12/9a/85129abc5df4216050f354b8188861a3.jpg",
+  //     rating: 4.5,
+  //     reviews: 28,
+  //     isNew: false,
+  //     isFavorite: false,
+  //     description: "Comfortable joggers with Manila-inspired graphics"
+  //   },
+  //   {
+  //     id: 7,
+  //     name: "Capiz Shell Earrings",
+  //     price: 599,
+  //     category: "accessories",
+  //     image: "https://i.pinimg.com/736x/85/12/9a/85129abc5df4216050f354b8188861a3.jpg",
+  //     rating: 4.9,
+  //     reviews: 31,
+  //     isNew: false,
+  //     isFavorite: true,
+  //     description: "Delicate earrings crafted from authentic Capiz shells"
+  //   },
+  //   {
+  //     id: 8,
+  //     name: "Baro't Saya Set - Royal Blue",
+  //     price: 4299,
+  //     originalPrice: 4999,
+  //     category: "traditional",
+  //     image: "https://i.pinimg.com/736x/85/12/9a/85129abc5df4216050f354b8188861a3.jpg",
+  //     rating: 4.8,
+  //     reviews: 12,
+  //     isNew: true,
+  //     isFavorite: false,
+  //     description: "Complete traditional Baro't Saya in royal blue"
+  //   },
+  //   {
+  //     id: 9,
+  //     name: "Jeepney Graphic Tee",
+  //     price: 899,
+  //     category: "streetwear",
+  //     image: "https://i.pinimg.com/736x/85/12/9a/85129abc5df4216050f354b8188861a3.jpg",
+  //     rating: 4.4,
+  //     reviews: 47,
+  //     isNew: false,
+  //     isFavorite: false,
+  //     description: "Vibrant tee featuring iconic Filipino jeepney design"
+  //   },
+  //   {
+  //     id: 10,
+  //     name: "Banig Clutch Bag",
+  //     price: 899,
+  //     category: "accessories",
+  //     image: "https://i.pinimg.com/736x/85/12/9a/85129abc5df4216050f354b8188861a3.jpg",
+  //     rating: 4.7,
+  //     reviews: 22,
+  //     isNew: false,
+  //     isFavorite: true,
+  //     description: "Handwoven clutch bag made from traditional banig"
+  //   },
+  //   {
+  //     id: 11,
+  //     name: "Terno Sleeve Blouse",
+  //     price: 1899,
+  //     category: "traditional",
+  //     image: "https://i.pinimg.com/736x/85/12/9a/85129abc5df4216050f354b8188861a3.jpg",
+  //     rating: 4.6,
+  //     reviews: 19,
+  //     isNew: false,
+  //     isFavorite: false,
+  //     description: "Modern interpretation of the classic Terno sleeve"
+  //   },
+  //   {
+  //     id: 12,
+  //     name: "Pinoy Pride Bomber Jacket",
+  //     price: 2199,
+  //     category: "streetwear",
+  //     image: "https://i.pinimg.com/736x/85/12/9a/85129abc5df4216050f354b8188861a3.jpg",
+  //     rating: 4.8,
+  //     reviews: 33,
+  //     isNew: true,
+  //     isFavorite: false,
+  //     description: "Premium bomber jacket with Filipino pride embroidery"
+  //   }
+  // ]);
   const [filteredProducts, setFilteredProducts] = useState([]);
 
-  const categories = [
-    { id: "all", name: "All Products", count: 24 },
-    { id: "traditional", name: "Heritage & Elegance", count: 8 },
-    { id: "streetwear", name: "Urban Filipino", count: 10 },
-    { id: "accessories", name: "Signature Touches", count: 6 },
-  ];
+  // const categories = [
+  //   { id: "all", name: "All Products", count: 24 },
+  //   { id: "traditional", name: "Heritage & Elegance", count: 8 },
+  //   { id: "streetwear", name: "Urban Filipino", count: 10 },
+  //   { id: "accessories", name: "Signature Touches", count: 6 },
+  // ];
 
   const sortOptions = [
     { value: "featured", label: "Featured" },
     { value: "newest", label: "Newest First" },
     { value: "price-low", label: "Price: Low to High" },
     { value: "price-high", label: "Price: High to Low" },
-    { value: "rating", label: "Highest Rated" }
+    { value: "rating", label: "Highest Rated" },
   ];
 
   useEffect(() => {
-    let filtered = [...productsData];
+    let filtered = productsData ? [...productsData] : [];
 
     // Filter by category
     if (selectedCategory !== "all") {
-      filtered = filtered.filter(product => product.category === selectedCategory);
+      filtered = filtered.filter(
+        (product) => product.category === selectedCategory
+      );
     }
 
     // Filter by search term
     if (searchTerm) {
-      filtered = filtered.filter(product =>
-        product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        product.description.toLowerCase().includes(searchTerm.toLowerCase())
+      filtered = filtered.filter(
+        (product) =>
+          product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          product.description.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
 
@@ -217,18 +233,16 @@ export default function Allproducts() {
     console.log(`Navigating to: ${path}`);
   };
 
-  const toggleFavorite = (productId) => {
-    setProductsData(prevProducts =>
-      prevProducts.map(product =>
-        product.id === productId ? { ...product, isFavorite: !product.isFavorite } : product
-      )
-    );
-  };
-
   const addToCart = (productId) => {
     console.log(`Add to cart: ${productId}`);
   };
 
+  if (isLoading) {
+    return <h1>Loading...</h1>;
+  }
+  if (isError) {
+    return <h1>Error loading products</h1>;
+  }
   return (
     <div className="min-h-screen w-full bg-gray-900">
       {/* Header Section */}
@@ -246,7 +260,10 @@ export default function Allproducts() {
           {/* Search Bar */}
           <div className="max-w-2xl mx-auto mb-8">
             <div className="relative">
-              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+              <Search
+                className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"
+                size={20}
+              />
               <input
                 type="text"
                 placeholder="Search products..."
@@ -272,23 +289,29 @@ export default function Allproducts() {
                 <Filter size={18} />
                 Filters & Sort
               </span>
-              <ChevronDown 
-                size={18} 
-                className={`transform transition-transform ${showFilters ? 'rotate-180' : ''}`}
+              <ChevronDown
+                size={18}
+                className={`transform transition-transform ${
+                  showFilters ? "rotate-180" : ""
+                }`}
               />
             </button>
 
             {/* Horizontal Filters - Always visible on desktop, toggleable on mobile */}
-            <div className={`${showFilters ? 'block' : 'hidden lg:block'} bg-gray-800 rounded-xl p-6 border border-gray-700`}>
+            <div
+              className={`${
+                showFilters ? "block" : "hidden lg:block"
+              } bg-gray-800 rounded-xl p-6 border border-gray-700`}
+            >
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {/* Categories Section */}
                 <div>
                   <h3 className="text-white font-semibold mb-4 flex items-center gap-2">
                     <Filter size={18} />
-                    Categories  
+                    Categories
                   </h3>
                   <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-2 xl:grid-cols-4 gap-2">
-                    {categories.map((category) => (
+                    {categoriesData?.map((category) => (
                       <button
                         key={category.id}
                         onClick={() => setSelectedCategory(category.id)}
@@ -299,8 +322,12 @@ export default function Allproducts() {
                         }`}
                       >
                         <div className="flex flex-col items-center gap-1">
-                          <span className="truncate w-full text-center">{category.name}</span>
-                          <span className="text-xs opacity-70">({category.count})</span>
+                          <span className="truncate w-full text-center">
+                            {category.name}
+                          </span>
+                          <span className="text-xs opacity-70">
+                            ({category.count})
+                          </span>
                         </div>
                       </button>
                     ))}
@@ -311,7 +338,7 @@ export default function Allproducts() {
                 <div>
                   <h3 className="text-white font-semibold mb-4">Sort By</h3>
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 gap-2">
-                    {sortOptions.map((option) => (
+                    {sortOptions?.map((option) => (
                       <button
                         key={option.value}
                         onClick={() => setSortBy(option.value)}
@@ -362,12 +389,14 @@ export default function Allproducts() {
             </div>
 
             {/* Products Grid */}
-            <div className={`grid gap-6 ${
-              viewMode === "grid"
-                ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
-                : "grid-cols-1"
-            }`}>
-              {filteredProducts.map((product) => (
+            <div
+              className={`grid gap-6 ${
+                viewMode === "grid"
+                  ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+                  : "grid-cols-1"
+              }`}
+            >
+              {filteredProducts?.map((product) => (
                 <div
                   key={product.id}
                   className={`group bg-gray-800 rounded-xl overflow-hidden border border-gray-700 hover:border-orange-500/50 transition-all duration-300 hover:shadow-2xl hover:shadow-orange-500/10 ${
@@ -375,9 +404,11 @@ export default function Allproducts() {
                   }`}
                 >
                   {/* Product Image */}
-                  <div className={`relative overflow-hidden ${
-                    viewMode === "list" ? "w-48 h-48" : "aspect-[3/4]"
-                  }`}>
+                  <div
+                    className={`relative overflow-hidden ${
+                      viewMode === "list" ? "w-48 h-48" : "aspect-[3/4]"
+                    }`}
+                  >
                     <img
                       src={product.image}
                       alt={product.name}
@@ -403,7 +434,9 @@ export default function Allproducts() {
                     {/* Action Buttons */}
                     <div className="absolute top-3 right-3 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                       <button
-                        onClick={() => navigate(`/productdetails/${product.id}`)}
+                        onClick={() =>
+                          navigate(`/productdetails/${product.id}`)
+                        }
                         className="p-2 rounded-full bg-black/50 text-white hover:bg-orange-500 transition-colors backdrop-blur-sm"
                       >
                         <Eye size={16} />
@@ -421,7 +454,13 @@ export default function Allproducts() {
                   </div>
 
                   {/* Product Details */}
-                  <div className={`p-4 ${viewMode === "list" ? "flex-1 flex flex-col justify-between" : ""}`}>
+                  <div
+                    className={`p-4 ${
+                      viewMode === "list"
+                        ? "flex-1 flex flex-col justify-between"
+                        : ""
+                    }`}
+                  >
                     <div>
                       <h3 className="text-white font-semibold text-lg mb-2 line-clamp-2 group-hover:text-orange-300 transition-colors">
                         {product.name}
@@ -436,7 +475,7 @@ export default function Allproducts() {
                       {/* Rating */}
                       <div className="flex items-center gap-2 mb-3">
                         <div className="flex items-center">
-                          {[...Array(5)].map((_, i) => (
+                          {[...Array(5)]?.map((_, i) => (
                             <Star
                               key={i}
                               size={14}
@@ -474,8 +513,12 @@ export default function Allproducts() {
             {filteredProducts.length === 0 && (
               <div className="text-center py-12">
                 <div className="text-gray-400 text-6xl mb-4">🔍</div>
-                <h3 className="text-white text-xl font-semibold mb-2">No products found</h3>
-                <p className="text-gray-400">Try adjusting your search or filter criteria</p>
+                <h3 className="text-white text-xl font-semibold mb-2">
+                  No products found
+                </h3>
+                <p className="text-gray-400">
+                  Try adjusting your search or filter criteria
+                </p>
               </div>
             )}
           </main>
