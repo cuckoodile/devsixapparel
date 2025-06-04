@@ -9,6 +9,7 @@ import {
   ChevronRight,
   Shield
 } from "lucide-react";
+import isAuthenTicated from "../../components/HOC/isAuthenticated"; 
 
 import NavigationText from "../../components/Texts/NavigationText";
 
@@ -81,7 +82,7 @@ function SidebarNavItem({ item, isActive }) {
   );
 }
 
-export default function Index_Admin() {
+function Index_Admin() {
   const location = useLocation();
 
   return (
@@ -129,3 +130,5 @@ export default function Index_Admin() {
     </div>
   );
 }
+
+export default isAuthenTicated(Index_Admin);

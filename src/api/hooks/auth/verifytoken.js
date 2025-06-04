@@ -1,30 +1,33 @@
 import { useMutation } from "@tanstack/react-query";
 import { BASE_URL } from "../../api_connection";
 
-export default function useVerifyToken(token) {
-  const queryClient = new queryClient();
+// function useVerifyToken(token) {
+//   const queryClient = new queryClient();
 
-  return useMutation({
-    mutationKey: ["user"],
-    mutationFn: () => verifyToken(token),
-    onSuccess: (data) => {
-      console.log("Check token success: ", data);
-      queryClient.invalidateQueries(["user"]);
-      sessionStorage.setItem("user", data.access);
-    },
-    staletime: 1000 * 60 * 5,
-  });
-}
+//   return useMutation({
+//     mutationKey: ["user"],
+//     mutationFn: () => verifyToken(token),
+//     onSuccess: (data) => {
+//       console.log("Check token success: ", data);
+//       queryClient.invalidateQueries(["user"]);
+//       sessionStorage.setItem("user", data.access);
+//     },
+//     staletime: 1000 * 60 * 5,
+//   });
+// }
 
-async function verifyToken(token) {
+export default async function verifyToken(token) {
+  const data = {token: token}
+  console.log("Verifying token with: ", data)
+
   try {
-    const response = await fetch(`${BASE_URL}/api/token/verify/`, {
+    const response = await fetch(`${BASE_URL}api/token/verify/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
       },
-      body: JSON.stringify(token),
+      body: JSON.stringify(data),
     });
 
     if (!response.ok) {

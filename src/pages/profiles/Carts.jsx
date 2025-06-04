@@ -2,8 +2,9 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { ShoppingCart, Trash2, ChevronRight } from "lucide-react";
 import useGetCarts from "../../api/hooks/carts/useGetcarts";
+import isAuthenTicated from "../../components/HOC/isAuthenticated";
 
-export default function Carts() {
+function Carts() {
   const userToken = sessionStorage.getItem("user")
 
   const { data: cartsData, isLoading, isError } = useGetCarts(userToken);
@@ -210,3 +211,5 @@ export default function Carts() {
     </div>
   );
 }
+
+export default isAuthenTicated(Carts);

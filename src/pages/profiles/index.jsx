@@ -1,8 +1,9 @@
 import React from "react";
 import { Link, Outlet, useParams } from "react-router-dom";
 import NavigationText from "../../components/Texts/NavigationText";
+import isAuthenTicated from "../../components/HOC/isAuthenticated";
 
-export default function Index_Profile() {
+function Index_Profile() {
   // const paramsId = useParams().id;
 
   return (
@@ -12,12 +13,14 @@ export default function Index_Profile() {
     //     <NavigationText to={`/profile/${paramsId}/carts`}>carts</NavigationText>
     //     <NavigationText to={`/profile/${paramsId}/purchases`}>
     //       purchases
-    //     </NavigationText>  
+    //     </NavigationText>
     //   </div>
 
     //   <div className="size-full flex justify-center">
-        <Outlet />
+    <Outlet />
     //   </div>
     // </div>
   );
 }
+
+export default isAuthenTicated(Index_Profile);
