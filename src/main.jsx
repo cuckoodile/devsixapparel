@@ -4,18 +4,18 @@ import "./index.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import App from "./App.jsx";
 import Index from "./pages/index.jsx";
-import Auth from "./pages/auth.jsx";
-import Allproducts from "./pages/allproducts.jsx";
-import Productdetails from "./pages/productdetails.jsx";
+import Auth from "./pages/Auth.jsx";
+import Allproducts from "./pages/Allproducts.jsx";
+import Productdetails from "./pages/Productdetails.jsx";
 import Index_Profile from "./pages/profiles/index.jsx";
-import Carts from "./pages/profiles/carts.jsx";
-import Profile from "./pages/profiles/profile.jsx";
-import Purchases from "./pages/profiles/purchases.jsx";
+import Carts from "./pages/profiles/Carts.jsx";
+import Profile from "./pages/profiles/Profile.jsx";
+import Purchases from "./pages/profiles/Purchases.jsx";
 import Index_Admin from "./pages/admins/index.jsx";
-import Productlists from "./pages/admins/productlists.jsx";
-import Admins from "./pages/admins/admins.jsx";
-import Shippers from "./pages/admins/shippers.jsx";
-import Trackers from "./pages/admins/trackers.jsx";
+import Productlists from "./pages/admins/Productlists.jsx";
+import Admins from "./pages/admins/Admins.jsx";
+import Shippers from "./pages/admins/Shippers.jsx";
+import Trackers from "./pages/admins/Trackers.jsx";
 
 const router = createBrowserRouter([
   {

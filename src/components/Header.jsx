@@ -33,9 +33,11 @@ export default function Header() {
             >
               Admin
             </NavigationText>
-            <button className="text-gray-300 hover:text-green-400 transition-colors duration-200">
+
+            <NavigationText to={"/profile/1/carts"} variant={"main"} className="text-gray-300 hover:text-green-400 transition-colors duration-200">
               <ShoppingCart size={24} />
-            </button>
+            </NavigationText>
+
             <NavigationText 
               variant={"main"} 
               to={"profile/69/"}

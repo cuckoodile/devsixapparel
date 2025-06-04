@@ -4,7 +4,9 @@ import { ShoppingCart, Trash2, ChevronRight } from "lucide-react";
 import useGetCarts from "../../api/hooks/carts/useGetcarts";
 
 export default function Carts() {
-  const { data: cartsData, isLoading, isError } = useGetCarts();
+  const userToken = sessionStorage.getItem("user")
+
+  const { data: cartsData, isLoading, isError } = useGetCarts(userToken);
   // const paramsId = useParams().id;
   const [cartItems, setCartItems] = useState([]);
   // const [loading, setLoading] = useState(true);
@@ -96,9 +98,9 @@ export default function Carts() {
     return <h1>Loading Cart...</h1>;
   }
 
-  if (isError) {
-    return <h1>Error Loading Cart</h1>;
-  }
+  // if (isError && cartItems?.length < 1) {
+  //   return <h1>Error Loading Cart</h1>;
+  // }
 
   return (
     <div className="h-screen w-428 bg-gray-900 text-white font-sans overflow-hidden flex flex-col">

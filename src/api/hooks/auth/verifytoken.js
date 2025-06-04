@@ -1,5 +1,22 @@
+import { useMutation } from "@tanstack/react-query";
 import { BASE_URL } from "../../api_connection";
-export default async function verifyToken(token) {
+
+export default function useVerifyToken(token) {
+  const queryClient = new queryClient();
+
+  return useMutation({
+    mutationKey: ["user"],
+    mutationFn: () => verifyToken(token),
+    onSuccess: (data) => {
+      console.log("Check token success: ", data);
+      queryClient.invalidateQueries(["user"]);
+      sessionStorage.setItem("user", data.access);
+    },
+    staletime: 1000 * 60 * 5,
+  });
+}
+
+async function verifyToken(token) {
   try {
     const response = await fetch(`${BASE_URL}/api/token/verify/`, {
       method: "POST",
