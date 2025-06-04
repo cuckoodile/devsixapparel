@@ -12,7 +12,8 @@ import {
   Clock,
   Briefcase,
   ChevronRight,
-  ShoppingBag
+  ShoppingBag,
+  Key
 } from 'lucide-react';
 
 export default function UserProfile() {
@@ -192,9 +193,14 @@ export default function UserProfile() {
               </div>
             </div>
           </div>
-          <button className="mt-6 sm:mt-0 px-6 py-2 bg-orange-600 hover:bg-orange-700 text-white font-semibold rounded-lg shadow-md transition-colors duration-300 flex items-center gap-2">
-            <Edit2 size={20} /> Edit Profile
-          </button>
+          <div className="mt-6 sm:mt-0 flex flex-col sm:flex-row gap-3">
+            <button className="px-6 py-2 bg-orange-600 hover:bg-orange-700 text-white font-semibold rounded-lg shadow-md transition-colors duration-300 flex items-center gap-2">
+              <Edit2 size={20} /> Edit Profile
+            </button>
+            <button className="px-6 py-2 bg-gray-600 hover:bg-gray-700 text-white font-semibold rounded-lg shadow-md transition-colors duration-300 flex items-center gap-2">
+              <Key size={20} /> Change Password
+            </button>
+          </div>
         </div>
       </div>
 
@@ -205,7 +211,6 @@ export default function UserProfile() {
           <nav className="space-y-4">
             <TabButton icon={<Briefcase size={24} />} label="Dashboard" tabName="dashboard" />
             <TabButton icon={<ShoppingBag size={24} />} label="Order History" tabName="orders" />
-            <TabButton icon={<Settings size={24} />} label="Settings" tabName="settings" />
             <button className="flex items-center gap-3 w-full p-4 rounded-lg text-left text-red-400 hover:bg-gray-700 hover:text-red-300 transition-colors duration-300 mt-6">
               <LogOut size={24} /> <span className="font-medium text-lg">Logout</span>
             </button>
@@ -299,22 +304,6 @@ export default function UserProfile() {
                 ) : (
                   <p className="text-gray-400">No orders found.</p>
                 )}
-              </div>
-            </div>
-          )}
-
-          {/* Settings Tab Content */}
-          {activeTab === 'settings' && (
-            <div className="bg-gray-800 rounded-lg p-6 sm:p-8 shadow-xl h-full">
-              <h2 className="text-2xl sm:text-3xl font-bold text-orange-400 mb-6 flex items-center gap-3">
-                <Settings size={28} /> Account Settings
-              </h2>
-              <div className="space-y-6 text-gray-300">
-                {/* Password Change Button */}
-                <button className="w-full flex items-center justify-between px-6 py-4 bg-gray-700 hover:bg-gray-600 text-white font-semibold rounded-lg shadow-md transition-colors duration-300">
-                  <span>Change Password</span>
-                  <ChevronRight size={20} className="text-gray-400" />
-                </button>
               </div>
             </div>
           )}

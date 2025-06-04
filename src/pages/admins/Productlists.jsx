@@ -184,10 +184,10 @@ export default function Productlists() {
 
   const getStatusColor = (status) => {
     switch(status) {
-      case 'active': return 'bg-green-100 text-green-800'
-      case 'low_stock': return 'bg-yellow-100 text-yellow-800'
-      case 'out_of_stock': return 'bg-red-100 text-red-800'
-      default: return 'bg-gray-100 text-gray-800'
+      case 'active': return 'bg-green-900 text-green-200'
+      case 'low_stock': return 'bg-yellow-900 text-yellow-200'
+      case 'out_of_stock': return 'bg-red-900 text-red-200'
+      default: return 'bg-gray-700 text-gray-200'
     }
   }
 
@@ -201,14 +201,14 @@ export default function Productlists() {
   }
 
   return (
-    <div className="min-h-screen w-290 bg-gray-50">
+    <div className="min-h-screen w-290 bg-gray-900">
       <div className="h-screen flex flex-col">
         {/* Header */}
-        <div className="bg-white shadow-sm border-b px-6 py-4 flex-shrink-0">
+        <div className="bg-gray-800 shadow-sm border-b border-gray-700 px-6 py-4 flex-shrink-0">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900">DevSix Apparel</h1>
-              <p className="text-gray-600">Product Management</p>
+              <h1 className="text-3xl font-bold text-gray-100">DevSix Apparel</h1>
+              <p className="text-gray-400">Product Management</p>
             </div>
             <div className="flex items-center space-x-4">
               {/* Search */}
@@ -219,7 +219,7 @@ export default function Productlists() {
                   placeholder="Search products..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-10 pr-4 py-2 border border-gray-200 rounded-lg w-64 focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
+                  className="pl-10 pr-4 py-2 border border-gray-600 bg-gray-700 rounded-lg w-64 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-200"
                 />
               </div>
               
@@ -227,7 +227,7 @@ export default function Productlists() {
               <select
                 value={categoryFilter}
                 onChange={(e) => setCategoryFilter(e.target.value)}
-                className="px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
+                className="px-4 py-2 border border-gray-600 bg-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-200"
               >
                 <option value="all">All Categories</option>
                 {categories.map(cat => (
@@ -239,7 +239,7 @@ export default function Productlists() {
               <select
                 value={statusFilter}
                 onChange={(e) => setStatusFilter(e.target.value)}
-                className="px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
+                className="px-4 py-2 border border-gray-600 bg-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-200"
               >
                 <option value="all">All Status</option>
                 <option value="active">Active</option>
@@ -250,7 +250,7 @@ export default function Productlists() {
               {/* Add Product Button */}
               <button
                 onClick={handleCreate}
-                className="bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800 flex items-center space-x-2"
+                className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center space-x-2"
               >
                 <Plus className="w-4 h-4" />
                 <span>Add Product</span>
@@ -264,43 +264,43 @@ export default function Productlists() {
           <div className="max-w-7xl mx-auto">
             {/* Stats Bar */}
             <div className="grid grid-cols-4 gap-4 mb-6">
-              <div className="bg-white p-4 rounded-lg shadow-sm border">
+              <div className="bg-gray-800 p-4 rounded-lg shadow-sm border border-gray-700">
                 <div className="flex items-center">
-                  <Package className="w-8 h-8 text-blue-500" />
+                  <Package className="w-8 h-8 text-blue-400" />
                   <div className="ml-3">
-                    <p className="text-sm font-medium text-gray-500">Total Products</p>
-                    <p className="text-2xl font-bold text-gray-900">{products.length}</p>
+                    <p className="text-sm font-medium text-gray-400">Total Products</p>
+                    <p className="text-2xl font-bold text-gray-100">{products.length}</p>
                   </div>
                 </div>
               </div>
-              <div className="bg-white p-4 rounded-lg shadow-sm border">
+              <div className="bg-gray-800 p-4 rounded-lg shadow-sm border border-gray-700">
                 <div className="flex items-center">
-                  <Shirt className="w-8 h-8 text-green-500" />
+                  <Shirt className="w-8 h-8 text-green-400" />
                   <div className="ml-3">
-                    <p className="text-sm font-medium text-gray-500">Active Products</p>
-                    <p className="text-2xl font-bold text-gray-900">
+                    <p className="text-sm font-medium text-gray-400">Active Products</p>
+                    <p className="text-2xl font-bold text-gray-100">
                       {products.filter(p => p.status === 'active').length}
                     </p>
                   </div>
                 </div>
               </div>
-              <div className="bg-white p-4 rounded-lg shadow-sm border">
+              <div className="bg-gray-800 p-4 rounded-lg shadow-sm border border-gray-700">
                 <div className="flex items-center">
-                  <Tag className="w-8 h-8 text-yellow-500" />
+                  <Tag className="w-8 h-8 text-yellow-400" />
                   <div className="ml-3">
-                    <p className="text-sm font-medium text-gray-500">Low Stock</p>
-                    <p className="text-2xl font-bold text-gray-900">
+                    <p className="text-sm font-medium text-gray-400">Low Stock</p>
+                    <p className="text-2xl font-bold text-gray-100">
                       {products.filter(p => p.status === 'low_stock').length}
                     </p>
                   </div>
                 </div>
               </div>
-              <div className="bg-white p-4 rounded-lg shadow-sm border">
+              <div className="bg-gray-800 p-4 rounded-lg shadow-sm border border-gray-700">
                 <div className="flex items-center">
-                  <DollarSign className="w-8 h-8 text-purple-500" />
+                  <DollarSign className="w-8 h-8 text-purple-400" />
                   <div className="ml-3">
-                    <p className="text-sm font-medium text-gray-500">Total Value</p>
-                    <p className="text-2xl font-bold text-gray-900">
+                    <p className="text-sm font-medium text-gray-400">Total Value</p>
+                    <p className="text-2xl font-bold text-gray-100">
                       ₱{products.reduce((sum, p) => sum + (p.price * p.stock), 0).toLocaleString()}
                     </p>
                   </div>
@@ -309,47 +309,47 @@ export default function Productlists() {
             </div>
 
             {/* Products Table */}
-            <div className="bg-white rounded-lg shadow-sm border overflow-hidden">
+            <div className="bg-gray-800 rounded-lg shadow-sm border border-gray-700 overflow-hidden">
               <div className="overflow-x-auto">
                 <table className="w-full">
-                  <thead className="bg-gray-50 border-b">
+                  <thead className="bg-gray-700 border-b border-gray-600">
                     <tr>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Stock</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Product</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Category</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Price</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Stock</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Status</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Actions</th>
                     </tr>
                   </thead>
-                  <tbody className="bg-white divide-y divide-gray-200">
+                  <tbody className="bg-gray-800 divide-y divide-gray-700">
                     {filteredProducts.length === 0 ? (
                       <tr>
                         <td colSpan="6" className="px-6 py-12 text-center">
-                          <Package className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                          <h3 className="text-lg font-medium text-gray-900 mb-2">No products found</h3>
-                          <p className="text-gray-500">Try adjusting your search or filter criteria.</p>
+                          <Package className="w-12 h-12 text-gray-500 mx-auto mb-4" />
+                          <h3 className="text-lg font-medium text-gray-100 mb-2">No products found</h3>
+                          <p className="text-gray-400">Try adjusting your search or filter criteria.</p>
                         </td>
                       </tr>
                     ) : (
                       filteredProducts.map(product => (
-                        <tr key={product.id} className="hover:bg-gray-50">
+                        <tr key={product.id} className="hover:bg-gray-700">
                           <td className="px-6 py-4 whitespace-nowrap">
                             <div className="flex items-center">
                               <div className="flex-shrink-0 h-10 w-10">
-                                <div className="h-10 w-10 rounded-lg bg-gray-200 flex items-center justify-center">
-                                  <Shirt className="w-6 h-6 text-gray-500" />
+                                <div className="h-10 w-10 rounded-lg bg-gray-600 flex items-center justify-center">
+                                  <Shirt className="w-6 h-6 text-gray-400" />
                                 </div>
                               </div>
                               <div className="ml-4">
-                                <div className="text-sm font-medium text-gray-900">{product.name}</div>
-                                <div className="text-sm text-gray-500">{product.color}</div>
+                                <div className="text-sm font-medium text-gray-100">{product.name}</div>
+                                <div className="text-sm text-gray-400">{product.color}</div>
                               </div>
                             </div>
                           </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{product.category}</td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">₱{product.price.toLocaleString()}</td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{product.stock}</td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-100">{product.category}</td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-100">₱{product.price.toLocaleString()}</td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-100">{product.stock}</td>
                           <td className="px-6 py-4 whitespace-nowrap">
                             <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(product.status)}`}>
                               {getStatusText(product.status)}
@@ -359,21 +359,21 @@ export default function Productlists() {
                             <div className="flex items-center space-x-2">
                               <button
                                 onClick={() => handleView(product)}
-                                className="text-gray-600 hover:text-gray-900"
+                                className="text-gray-400 hover:text-gray-200"
                                 title="View"
                               >
                                 <Eye className="w-4 h-4" />
                               </button>
                               <button
                                 onClick={() => handleEdit(product)}
-                                className="text-blue-600 hover:text-blue-900"
+                                className="text-blue-400 hover:text-blue-200"
                                 title="Edit"
                               >
                                 <Edit3 className="w-4 h-4" />
                               </button>
                               <button
                                 onClick={() => handleDelete(product.id)}
-                                className="text-red-600 hover:text-red-900"
+                                className="text-red-400 hover:text-red-200"
                                 title="Delete"
                               >
                                 <Trash2 className="w-4 h-4" />
@@ -394,16 +394,16 @@ export default function Productlists() {
       {/* Modal */}
       {showModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+          <div className="bg-gray-800 rounded-lg p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-bold text-gray-900">
+              <h2 className="text-2xl font-bold text-gray-100">
                 {modalMode === 'create' && 'Add New Product'}
                 {modalMode === 'edit' && 'Edit Product'}
                 {modalMode === 'view' && 'Product Details'}
               </h2>
               <button
                 onClick={() => setShowModal(false)}
-                className="text-gray-500 hover:text-gray-700"
+                className="text-gray-400 hover:text-gray-200"
               >
                 <X className="w-6 h-6" />
               </button>
@@ -413,66 +413,66 @@ export default function Productlists() {
               <div className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Product Name</label>
-                    <p className="text-gray-900">{selectedProduct?.name}</p>
+                    <label className="block text-sm font-medium text-gray-400 mb-1">Product Name</label>
+                    <p className="text-gray-100">{selectedProduct?.name}</p>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
-                    <p className="text-gray-900">{selectedProduct?.category}</p>
+                    <label className="block text-sm font-medium text-gray-400 mb-1">Category</label>
+                    <p className="text-gray-100">{selectedProduct?.category}</p>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Price</label>
-                    <p className="text-gray-900">₱{selectedProduct?.price.toLocaleString()}</p>
+                    <label className="block text-sm font-medium text-gray-400 mb-1">Price</label>
+                    <p className="text-gray-100">₱{selectedProduct?.price.toLocaleString()}</p>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Stock</label>
-                    <p className="text-gray-900">{selectedProduct?.stock}</p>
+                    <label className="block text-sm font-medium text-gray-400 mb-1">Stock</label>
+                    <p className="text-gray-100">{selectedProduct?.stock}</p>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Color</label>
-                    <p className="text-gray-900">{selectedProduct?.color}</p>
+                    <label className="block text-sm font-medium text-gray-400 mb-1">Color</label>
+                    <p className="text-gray-100">{selectedProduct?.color}</p>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
+                    <label className="block text-sm font-medium text-gray-400 mb-1">Status</label>
                     <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(selectedProduct?.status)}`}>
                       {getStatusText(selectedProduct?.status)}
                     </span>
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Available Sizes</label>
+                  <label className="block text-sm font-medium text-gray-400 mb-1">Available Sizes</label>
                   <div className="flex flex-wrap gap-2">
                     {selectedProduct?.sizes.map(size => (
-                      <span key={size} className="px-2 py-1 bg-gray-100 text-gray-800 text-sm rounded">
+                      <span key={size} className="px-2 py-1 bg-gray-700 text-gray-200 text-sm rounded">
                         {size}
                       </span>
                     ))}
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
-                  <p className="text-gray-900">{selectedProduct?.description}</p>
+                  <label className="block text-sm font-medium text-gray-400 mb-1">Description</label>
+                  <p className="text-gray-100">{selectedProduct?.description}</p>
                 </div>
               </div>
             ) : (
               <form onSubmit={(e) => { e.preventDefault(); handleSave(); }} className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Product Name *</label>
+                    <label className="block text-sm font-medium text-gray-400 mb-1">Product Name *</label>
                     <input
                       type="text"
                       value={formData.name}
                       onChange={(e) => setFormData({...formData, name: e.target.value})}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
+                      className="w-full px-3 py-2 border border-gray-600 bg-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-200"
                       required
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Category *</label>
+                    <label className="block text-sm font-medium text-gray-400 mb-1">Category *</label>
                     <select
                       value={formData.category}
                       onChange={(e) => setFormData({...formData, category: e.target.value})}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
+                      className="w-full px-3 py-2 border border-gray-600 bg-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-200"
                       required
                     >
                       <option value="">Select Category</option>
@@ -482,44 +482,44 @@ export default function Productlists() {
                     </select>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Price (₱) *</label>
+                    <label className="block text-sm font-medium text-gray-400 mb-1">Price (₱) *</label>
                     <input
                       type="number"
                       value={formData.price}
                       onChange={(e) => setFormData({...formData, price: e.target.value})}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
+                      className="w-full px-3 py-2 border border-gray-600 bg-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-200"
                       min="0"
                       step="0.01"
                       required
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Stock Quantity *</label>
+                    <label className="block text-sm font-medium text-gray-400 mb-1">Stock Quantity *</label>
                     <input
                       type="number"
                       value={formData.stock}
                       onChange={(e) => setFormData({...formData, stock: e.target.value})}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
+                      className="w-full px-3 py-2 border border-gray-600 bg-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-200"
                       min="0"
                       required
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Color *</label>
+                    <label className="block text-sm font-medium text-gray-400 mb-1">Color *</label>
                     <input
                       type="text"
                       value={formData.color}
                       onChange={(e) => setFormData({...formData, color: e.target.value})}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
+                      className="w-full px-3 py-2 border border-gray-600 bg-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-200"
                       required
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
+                    <label className="block text-sm font-medium text-gray-400 mb-1">Status</label>
                     <select
                       value={formData.status}
                       onChange={(e) => setFormData({...formData, status: e.target.value})}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
+                      className="w-full px-3 py-2 border border-gray-600 bg-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-200"
                     >
                       <option value="active">Active</option>
                       <option value="low_stock">Low Stock</option>
@@ -529,7 +529,7 @@ export default function Productlists() {
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Available Sizes</label>
+                  <label className="block text-sm font-medium text-gray-400 mb-2">Available Sizes</label>
                   <div className="flex flex-wrap gap-2">
                     {availableSizes.map(size => (
                       <button
@@ -538,8 +538,8 @@ export default function Productlists() {
                         onClick={() => handleSizeToggle(size)}
                         className={`px-3 py-1 rounded-lg text-sm border ${
                           formData.sizes.includes(size)
-                            ? 'bg-black text-white border-black'
-                            : 'bg-white text-gray-700 border-gray-300 hover:border-gray-400'
+                            ? 'bg-blue-600 text-white border-blue-600'
+                            : 'bg-gray-700 text-gray-200 border-gray-600 hover:border-gray-500'
                         }`}
                       >
                         {size}
@@ -549,12 +549,12 @@ export default function Productlists() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                  <label className="block text-sm font-medium text-gray-400 mb-1">Description</label>
                   <textarea
                     value={formData.description}
                     onChange={(e) => setFormData({...formData, description: e.target.value})}
                     rows="3"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
+                    className="w-full px-3 py-2 border border-gray-600 bg-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-200"
                   />
                 </div>
 
@@ -562,13 +562,13 @@ export default function Productlists() {
                   <button
                     type="button"
                     onClick={() => setShowModal(false)}
-                    className="px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200"
+                    className="px-4 py-2 text-gray-200 bg-gray-700 rounded-lg hover:bg-gray-600"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
-                    className="px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-800 flex items-center space-x-2"
+                    className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center space-x-2"
                   >
                     <Save className="w-4 h-4" />
                     <span>{modalMode === 'create' ? 'Create Product' : 'Save Changes'}</span>

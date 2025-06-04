@@ -6,7 +6,7 @@ export default function Popup1({ visibility }) {
         onClick={() => visibility(false)}
       />
 
-      <div className="bg-white p-6 rounded-2xl shadow-lg relative z-10">
+      <div className="bg-white p-6 rounded-2xl shadow-lg relative z-10 text-black">
         <h1>Popup 1</h1>
         <p>This is the content of Popup 1.</p>
         <button onClick={() => alert("Button in Popup 1 clicked!")} className="cursor-pointer">

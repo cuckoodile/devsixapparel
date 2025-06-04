@@ -49,8 +49,8 @@ function SidebarNavItem({ item, isActive }) {
         group relative flex items-center gap-3 px-4 py-3 mx-2 rounded-lg
         transition-all duration-200 ease-in-out
         ${isActive 
-          ? 'bg-primary text-primary-foreground shadow-md' 
-          : 'text-muted-foreground hover:bg-accent hover:text-accent-foreground'
+          ? 'bg-blue-600 text-white shadow-md' 
+          : 'text-gray-400 hover:bg-gray-800 hover:text-gray-200'
         }
       `}
     >
@@ -65,7 +65,7 @@ function SidebarNavItem({ item, isActive }) {
         <div className="font-medium text-sm">{item.label}</div>
         <div className={`
           text-xs opacity-70 truncate
-          ${isActive ? 'text-primary-foreground/80' : 'text-muted-foreground'}
+          ${isActive ? 'text-white/80' : 'text-gray-400'}
         `}>
           {item.description}
         </div>
@@ -85,18 +85,18 @@ export default function Index_Admin() {
   const location = useLocation();
 
   return (
-    <div className="size-full flex bg-background">
+    <div className="size-full flex bg-gray-950">
       {/* Sidebar */}
-      <div className="min-w-[280px] flex flex-col bg-card border-r border-border shadow-sm">
+      <div className="min-w-[280px] flex flex-col bg-gray-900 border-r border-gray-800 shadow-sm">
         {/* Header */}
-        <div className="p-6 border-b border-border">
+        <div className="p-6 border-b border-gray-800">
           <div className="flex items-center gap-3">
-            <div className="p-2 bg-primary/10 rounded-lg">
-              <Settings className="w-6 h-6 text-primary" />
+            <div className="p-2 bg-blue-600/20 rounded-lg">
+              <Settings className="w-6 h-6 text-blue-400" />
             </div>
             <div>
-              <h1 className="font-semibold text-lg">Admin Panel</h1>
-              <p className="text-sm text-muted-foreground">Management Dashboard</p>
+              <h1 className="font-semibold text-lg text-white">Admin Panel</h1>
+              <p className="text-sm text-gray-400">Management Dashboard</p>
             </div>
           </div>
         </div>
@@ -104,7 +104,7 @@ export default function Index_Admin() {
         {/* Navigation */}
         <nav className="flex-1 py-4">
           <div className="px-4 mb-3">
-            <h2 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+            <h2 className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
               Management
             </h2>
           </div>
@@ -122,7 +122,7 @@ export default function Index_Admin() {
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col min-w-0">
-        <div className="flex-1 bg-background">
+        <div className="flex-1 bg-gray-950">
           <Outlet />
         </div>
       </div>

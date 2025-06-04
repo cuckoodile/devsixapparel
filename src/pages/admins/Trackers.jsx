@@ -77,7 +77,9 @@ export default function Trackers() {
                 product.id === productId
                   ? { ...product, status: editForm.status }
                   : product
-              )
+              ),
+              // Update order status based on product statuses
+              status: order.products.every(p => p.status === editForm.status && p.id === productId ? editForm.status : p.status) ? editForm.status : order.status
             }
           : order
       )
@@ -93,21 +95,21 @@ export default function Trackers() {
 
   const getStatusIcon = (status) => {
     switch(status) {
-      case 'ordered': return <Clock className="w-4 h-4 text-blue-500" />
-      case 'processing': return <Package className="w-4 h-4 text-yellow-500" />
-      case 'shipped': return <Truck className="w-4 h-4 text-purple-500" />
-      case 'delivered': return <CheckCircle className="w-4 h-4 text-green-500" />
-      default: return <Clock className="w-4 h-4 text-gray-500" />
+      case 'ordered': return <Clock className="w-4 h-4 text-blue-400" />
+      case 'processing': return <Package className="w-4 h-4 text-yellow-400" />
+      case 'shipped': return <Truck className="w-4 h-4 text-purple-400" />
+      case 'delivered': return <CheckCircle className="w-4 h-4 text-green-400" />
+      default: return <Clock className="w-4 h-4 text-gray-400" />
     }
   }
 
   const getStatusColor = (status) => {
     switch(status) {
-      case 'ordered': return 'bg-blue-100 text-blue-800'
-      case 'processing': return 'bg-yellow-100 text-yellow-800'
-      case 'shipped': return 'bg-purple-100 text-purple-800'
-      case 'delivered': return 'bg-green-100 text-green-800'
-      default: return 'bg-gray-100 text-gray-800'
+      case 'ordered': return 'bg-blue-900 text-blue-200'
+      case 'processing': return 'bg-yellow-900 text-yellow-200'
+      case 'shipped': return 'bg-purple-900 text-purple-200'
+      case 'delivered': return 'bg-green-900 text-green-200'
+      default: return 'bg-gray-700 text-gray-200'
     }
   }
 
@@ -122,13 +124,13 @@ export default function Trackers() {
   })
 
   return (
-    <div className="min-h-screen w-290 g-gray-50">
+    <div className="min-h-screen w-290 bg-gray-900">
       <div className="h-screen flex flex-col">
-        <div className="bg-white shadow-sm border-b px-6 py-4 flex-shrink-0">
+        <div className="bg-gray-800 shadow-sm border-b border-gray-700 px-6 py-4 flex-shrink-0">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900">DevSix Apparel</h1>
-              <p className="text-gray-600">Order Tracking Dashboard</p>
+              <h1 className="text-3xl font-bold text-gray-100">DevSix Apparel</h1>
+              <p className="text-gray-400">Order Tracking Dashboard</p>
             </div>
             <div className="flex items-center space-x-4">
               {/* Search */}
@@ -139,7 +141,7 @@ export default function Trackers() {
                   placeholder="Search orders, customers, or tracking..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-10 pr-4 py-2 border border-gray-200 rounded-lg w-80 focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
+                  className="pl-10 pr-4 py-2 border border-gray-600 bg-gray-700 rounded-lg w-80 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-200"
                 />
               </div>
               
@@ -149,7 +151,7 @@ export default function Trackers() {
                 <select
                   value={statusFilter}
                   onChange={(e) => setStatusFilter(e.target.value)}
-                  className="pl-10 pr-8 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent appearance-none bg-white"
+                  className="pl-10 pr-8 py-2 border border-gray-600 bg-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none text-gray-200"
                 >
                   <option value="all">All Orders</option>
                   <option value="ordered">Ordered</option>
@@ -167,45 +169,45 @@ export default function Trackers() {
           <div className="max-w-7xl mx-auto">
             {/* Stats Bar */}
             <div className="grid grid-cols-4 gap-4 mb-6">
-              <div className="bg-white p-4 rounded-lg shadow-sm border">
+              <div className="bg-gray-800 p-4 rounded-lg shadow-sm border border-gray-700">
                 <div className="flex items-center">
-                  <Clock className="w-8 h-8 text-blue-500" />
+                  <Clock className="w-8 h-8 text-blue-400" />
                   <div className="ml-3">
-                    <p className="text-sm font-medium text-gray-500">Ordered</p>
-                    <p className="text-2xl font-bold text-gray-900">
+                    <p className="text-sm font-medium text-gray-400">Ordered</p>
+                    <p className="text-2xl font-bold text-gray-100">
                       {orders.filter(o => o.status === 'ordered').length}
                     </p>
                   </div>
                 </div>
               </div>
-              <div className="bg-white p-4 rounded-lg shadow-sm border">
+              <div className="bg-gray-800 p-4 rounded-lg shadow-sm border border-gray-700">
                 <div className="flex items-center">
-                  <Package className="w-8 h-8 text-yellow-500" />
+                  <Package className="w-8 h-8 text-yellow-400" />
                   <div className="ml-3">
-                    <p className="text-sm font-medium text-gray-500">Processing</p>
-                    <p className="text-2xl font-bold text-gray-900">
+                    <p className="text-sm font-medium text-gray-400">Processing</p>
+                    <p className="text-2xl font-bold text-gray-100">
                       {orders.filter(o => o.status === 'processing').length}
                     </p>
                   </div>
                 </div>
               </div>
-              <div className="bg-white p-4 rounded-lg shadow-sm border">
+              <div className="bg-gray-800 p-4 rounded-lg shadow-sm border border-gray-700">
                 <div className="flex items-center">
-                  <Truck className="w-8 h-8 text-purple-500" />
+                  <Truck className="w-8 h-8 text-purple-400" />
                   <div className="ml-3">
-                    <p className="text-sm font-medium text-gray-500">Shipped</p>
-                    <p className="text-2xl font-bold text-gray-900">
+                    <p className="text-sm font-medium text-gray-400">Shipped</p>
+                    <p className="text-2xl font-bold text-gray-100">
                       {orders.filter(o => o.status === 'shipped').length}
                     </p>
                   </div>
                 </div>
               </div>
-              <div className="bg-white p-4 rounded-lg shadow-sm border">
+              <div className="bg-gray-800 p-4 rounded-lg shadow-sm border border-gray-700">
                 <div className="flex items-center">
-                  <CheckCircle className="w-8 h-8 text-green-500" />
+                  <CheckCircle className="w-8 h-8 text-green-400" />
                   <div className="ml-3">
-                    <p className="text-sm font-medium text-gray-500">Delivered</p>
-                    <p className="text-2xl font-bold text-gray-900">
+                    <p className="text-sm font-medium text-gray-400">Delivered</p>
+                    <p className="text-2xl font-bold text-gray-100">
                       {orders.filter(o => o.status === 'delivered').length}
                     </p>
                   </div>
@@ -217,143 +219,143 @@ export default function Trackers() {
             <div className="space-y-6">
               {filteredOrders.length === 0 ? (
                 <div className="text-center py-12">
-                  <Package className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                  <h3 className="text-lg font-medium text-gray-900 mb-2">No orders found</h3>
-                  <p className="text-gray-500">Try adjusting your search or filter criteria.</p>
+                  <Package className="w-12 h-12 text-gray-500 mx-auto mb-4" />
+                  <h3 className="text-lg font-medium text-gray-100 mb-2">No orders found</h3>
+                  <p className="text-gray-400">Try adjusting your search or filter criteria.</p>
                 </div>
               ) : (
                 filteredOrders.map(order => (
-            <div key={order.id} className="bg-white rounded-lg shadow-lg overflow-hidden">
-              {/* Order Header */}
-              <div className="bg-black text-white px-6 py-4">
-                <div className="flex justify-between items-center">
-                  <div>
-                    <h2 className="text-xl font-bold">Order {order.id}</h2>
-                    <p className="text-gray-300">{order.customerName}</p>
-                  </div>
-                  <div className="text-right">
-                    <div className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(order.status)}`}>
-                      {getStatusIcon(order.status)}
-                      <span className="ml-1 capitalize">{order.status}</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="p-6">
-                {/* Order Info */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                  <div className="flex items-center space-x-2">
-                    <Calendar className="w-4 h-4 text-gray-500" />
-                    <div>
-                      <p className="text-sm text-gray-500">Order Date</p>
-                      <p className="font-medium">{new Date(order.date).toLocaleDateString()}</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <Package className="w-4 h-4 text-gray-500" />
-                    <div>
-                      <p className="text-sm text-gray-500">Tracking Number</p>
-                      <p className="font-medium">{order.trackingNumber}</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <MapPin className="w-4 h-4 text-gray-500" />
-                    <div>
-                      <p className="text-sm text-gray-500">Delivery Address</p>
-                      <p className="font-medium">{order.shippingAddress}</p>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Products */}
-                <div className="mb-6">
-                  <h3 className="text-lg font-semibold mb-4">Items Ordered</h3>
-                  <div className="space-y-3">
-                    {order.products.map(product => (
-                      <div key={product.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-                        <div className="flex-1">
-                          <h4 className="font-medium">{product.name}</h4>
-                          <div className="flex items-center space-x-4 text-sm text-gray-600 mt-1">
-                            {product.size && <span>Size: {product.size}</span>}
-                            <span>Qty: {product.quantity}</span>
-                            <span>₱{product.price.toLocaleString()}</span>
+                  <div key={order.id} className="bg-gray-800 rounded-lg shadow-lg overflow-hidden border border-gray-700">
+                    {/* Order Header */}
+                    <div className="bg-blue-900 text-white px-6 py-4">
+                      <div className="flex justify-between items-center">
+                        <div>
+                          <h2 className="text-xl font-bold">Order {order.id}</h2>
+                          <p className="text-gray-300">{order.customerName}</p>
+                        </div>
+                        <div className="text-right">
+                          <div className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(order.status)}`}>
+                            {getStatusIcon(order.status)}
+                            <span className="ml-1 capitalize">{order.status}</span>
                           </div>
                         </div>
-                        <div className="flex items-center space-x-3">
-                          {editingProduct === product.id ? (
-                            <div className="flex items-center space-x-2">
-                              <select 
-                                value={editForm.status}
-                                onChange={(e) => setEditForm({ status: e.target.value })}
-                                className="px-2 py-1 border border-gray-300 rounded text-sm"
-                              >
-                                <option value="ordered">Ordered</option>
-                                <option value="processing">Processing</option>
-                                <option value="shipped">Shipped</option>
-                                <option value="delivered">Delivered</option>
-                              </select>
-                              <button
-                                onClick={() => updateProductStatus(order.id, product.id)}
-                                className="px-3 py-1 bg-black text-white text-xs rounded hover:bg-gray-800"
-                              >
-                                Save
-                              </button>
-                              <button
-                                onClick={() => setEditingProduct(null)}
-                                className="px-3 py-1 bg-gray-300 text-gray-700 text-xs rounded hover:bg-gray-400"
-                              >
-                                Cancel
-                              </button>
-                            </div>
-                          ) : (
-                            <>
-                              <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(product.status)}`}>
-                                {getStatusIcon(product.status)}
-                                <span className="ml-1 capitalize">{product.status}</span>
-                              </span>
-                              <button
-                                onClick={() => startEditing(product)}
-                                className="p-1 text-gray-400 hover:text-gray-600"
-                                title="Update status"
-                              >
-                                <Edit3 className="w-4 h-4" />
-                              </button>
-                            </>
-                          )}
-                        </div>
                       </div>
-                    ))}
-                  </div>
-                </div>
+                    </div>
 
-                {/* Order Timeline */}
-                <div>
-                  <h3 className="text-lg font-semibold mb-4">Order Timeline</h3>
-                  <div className="space-y-4">
-                    {order.timeline.map((step, index) => (
-                      <div key={index} className="flex items-center space-x-4">
-                        <div className={`flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center ${
-                          step.completed ? 'bg-black text-white' : 'bg-gray-200 text-gray-500'
-                        }`}>
-                          {getStatusIcon(step.status)}
+                    <div className="p-6">
+                      {/* Order Info */}
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                        <div className="flex items-center space-x-2">
+                          <Calendar className="w-4 h-4 text-gray-400" />
+                          <div>
+                            <p className="text-sm text-gray-400">Order Date</p>
+                            <p className="font-medium text-gray-100">{new Date(order.date).toLocaleDateString()}</p>
+                          </div>
                         </div>
-                        <div className="flex-1">
-                          <p className={`font-medium ${step.completed ? 'text-gray-900' : 'text-gray-500'}`}>
-                            {step.description}
-                          </p>
-                          {step.date && (
-                            <p className="text-sm text-gray-500">
-                              {new Date(step.date).toLocaleString()}
-                            </p>
-                          )}
+                        <div className="flex items-center space-x-2">
+                          <Package className="w-4 h-4 text-gray-400" />
+                          <div>
+                            <p className="text-sm text-gray-400">Tracking Number</p>
+                            <p className="font-medium text-gray-100">{order.trackingNumber}</p>
+                          </div>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <MapPin className="w-4 h-4 text-gray-400" />
+                          <div>
+                            <p className="text-sm text-gray-400">Delivery Address</p>
+                            <p className="font-medium text-gray-100">{order.shippingAddress}</p>
+                          </div>
                         </div>
                       </div>
-                    ))}
+
+                      {/* Products */}
+                      <div className="mb-6">
+                        <h3 className="text-lg font-semibold mb-4 text-gray-100">Items Ordered</h3>
+                        <div className="space-y-3">
+                          {order.products.map(product => (
+                            <div key={product.id} className="flex items-center justify-between p-4 bg-gray-700 rounded-lg">
+                              <div className="flex-1">
+                                <h4 className="font-medium text-gray-100">{product.name}</h4>
+                                <div className="flex items-center space-x-4 text-sm text-gray-400 mt-1">
+                                  {product.size && <span>Size: {product.size}</span>}
+                                  <span>Qty: {product.quantity}</span>
+                                  <span>₱{product.price.toLocaleString()}</span>
+                                </div>
+                              </div>
+                              <div className="flex items-center space-x-3">
+                                {editingProduct === product.id ? (
+                                  <div className="flex items-center space-x-2">
+                                    <select 
+                                      value={editForm.status}
+                                      onChange={(e) => setEditForm({ status: e.target.value })}
+                                      className="px-2 py-1 border border-gray-600 bg-gray-700 rounded text-sm text-gray-200"
+                                    >
+                                      <option value="ordered">Ordered</option>
+                                      <option value="processing">Processing</option>
+                                      <option value="shipped">Shipped</option>
+                                      <option value="delivered">Delivered</option>
+                                    </select>
+                                    <button
+                                      onClick={() => updateProductStatus(order.id, product.id)}
+                                      className="px-3 py-1 bg-blue-600 text-white text-xs rounded hover:bg-blue-700"
+                                    >
+                                      Save
+                                    </button>
+                                    <button
+                                      onClick={() => setEditingProduct(null)}
+                                      className="px-3 py-1 bg-gray-600 text-gray-200 text-xs rounded hover:bg-gray-500"
+                                    >
+                                      Cancel
+                                    </button>
+                                  </div>
+                                ) : (
+                                  <>
+                                    <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(product.status)}`}>
+                                      {getStatusIcon(product.status)}
+                                      <span className="ml-1 capitalize">{product.status}</span>
+                                    </span>
+                                    <button
+                                      onClick={() => startEditing(product)}
+                                      className="p-1 text-gray-400 hover:text-gray-200"
+                                      title="Update status"
+                                    >
+                                      <Edit3 className="w-4 h-4" />
+                                    </button>
+                                  </>
+                                )}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Order Timeline */}
+                      <div>
+                        <h3 className="text-lg font-semibold mb-4 text-gray-100">Order Timeline</h3>
+                        <div className="space-y-4">
+                          {order.timeline.map((step, index) => (
+                            <div key={index} className="flex items-center space-x-4">
+                              <div className={`flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center ${
+                                step.completed ? 'bg-blue-600 text-white' : 'bg-gray-600 text-gray-400'
+                              }`}>
+                                {getStatusIcon(step.status)}
+                              </div>
+                              <div className="flex-1">
+                                <p className={`font-medium ${step.completed ? 'text-gray-100' : 'text-gray-400'}`}>
+                                  {step.description}
+                                </p>
+                                {step.date && (
+                                  <p className="text-sm text-gray-400">
+                                    {new Date(step.date).toLocaleString()}
+                                  </p>
+                                )}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
-            </div>
                 ))
               )}
             </div>

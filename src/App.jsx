@@ -3,7 +3,7 @@ import Header from "./components/Header";
 
 function App() {
   return (
-    <div className="bg-background h-screen w-screen flex flex-col overflow-x-hidden">
+    <div >
       <Header />
 
       <div className="h-full flex justify-center text-center">
