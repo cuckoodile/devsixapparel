@@ -1,78 +1,83 @@
-import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import { ShoppingCart, Trash2, ChevronRight } from 'lucide-react';
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { ShoppingCart, Trash2, ChevronRight } from "lucide-react";
+import useGetCarts from "../../api/hooks/carts/useGetcarts";
 
 export default function Carts() {
-  const paramsId = useParams().id;
+  const { data: cartsData, isLoading, isError } = useGetCarts();
+  // const paramsId = useParams().id;
   const [cartItems, setCartItems] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  // const [loading, setLoading] = useState(true);
+  // const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const fetchCartData = async () => {
-      try {
-        setLoading(true);
-        setError(null);
+  // useEffect(() => {
+  //   const fetchCartData = async () => {
+  //     try {
+  //       setLoading(true);
+  //       setError(null);
 
-        await new Promise(resolve => setTimeout(resolve, 800));
+  //       await new Promise((resolve) => setTimeout(resolve, 800));
 
-        // Mock cart data with Philippine fashion items
-        const mockCart = {
-          '1': [
-            {
-              id: 'item001',
-              name: 'Barong Tagalog (Piña Fabric)',
-              price: 4500.00,
-              quantity: 1,
-              image: 'https://i.pinimg.com/736x/85/12/9a/85129abc5df4216050f354b8188861a3.jpg'
-            },
-            {
-              id: 'item002',
-              name: 'Terno Dress (Modern Filipiniana)',
-              price: 6500.00,
-              quantity: 1,
-              image: 'https://i.pinimg.com/736x/85/12/9a/85129abc5df4216050f354b8188861a3.jpg'
-            },
-            {
-              id: 'item003',
-              name: 'Handwoven Banig Clutch',
-              price: 1200.00,
-              quantity: 2,
-              image: 'https://i.pinimg.com/736x/85/12/9a/85129abc5df4216050f354b8188861a3.jpg'
-            }
-          ]
-        };
+  //       // Mock cart data with Philippine fashion items
+  //       const mockCart = {
+  //         2: [
+  //           {
+  //             id: "item001",
+  //             name: "Barong Tagalog (Piña Fabric)",
+  //             price: 4500.0,
+  //             quantity: 1,
+  //             image:
+  //               "https://i.pinimg.com/736x/85/12/9a/85129abc5df4216050f354b8188861a3.jpg",
+  //           },
+  //           {
+  //             id: "item002",
+  //             name: "Terno Dress (Modern Filipiniana)",
+  //             price: 6500.0,
+  //             quantity: 1,
+  //             image:
+  //               "https://i.pinimg.com/736x/85/12/9a/85129abc5df4216050f354b8188861a3.jpg",
+  //           },
+  //           {
+  //             id: "item003",
+  //             name: "Handwoven Banig Clutch",
+  //             price: 1200.0,
+  //             quantity: 2,
+  //             image:
+  //               "https://i.pinimg.com/736x/85/12/9a/85129abc5df4216050f354b8188861a3.jpg",
+  //           },
+  //         ],
+  //       };
 
-        const data = mockCart[paramsId] || [];
+  //       const data = mockCart[paramsId] || [];
 
-        setCartItems(data);
-      } catch (err) {
-        setError('Failed to load cart data.');
-        console.error('Error fetching cart data:', err);
-      } finally {
-        setLoading(false);
-      }
-    };
+  //       setCartItems(data);
+  //     } catch (err) {
+  //       setError("Failed to load cart data.");
+  //       console.error("Error fetching cart data:", err);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
 
-    if (paramsId) {
-      fetchCartData();
-    } else {
-      setLoading(false);
-      setError('No user ID provided.');
-    }
-  }, [paramsId]);
+  //   if (paramsId) {
+  //     fetchCartData();
+  //   } else {
+  //     setLoading(false);
+  //     setError("No user ID provided.");
+  //   }
+  // }, [paramsId]);
 
   const updateQuantity = (itemId, newQuantity) => {
     if (newQuantity < 1) return;
-    setCartItems(prevItems =>
-      prevItems.map(item =>
+    setCartItems((prevItems) =>
+      prevItems.map((item) =>
         item.id === itemId ? { ...item, quantity: newQuantity } : item
       )
     );
   };
 
   const removeItem = (itemId) => {
-    setCartItems(prevItems => prevItems.filter(item => item.id !== itemId));
+    setCartItems((prevItems) => prevItems.filter((item) => item.id !== itemId));
   };
 
   const calculateSubtotal = () => {
@@ -87,21 +92,12 @@ export default function Carts() {
   const tax = calculateTax(subtotal);
   const total = subtotal + tax;
 
-  if (loading) {
-    return (
-      <div className="h-screen w-screen bg-gray-900 flex items-center justify-center">
-        <div className="text-white text-xl">Loading cart...</div>
-      </div>
-    );
+  if (isLoading) {
+    return <h1>Loading Cart...</h1>;
   }
 
-  if (error) {
-    return (
-      <div className="h-screen w-screen bg-gray-900 flex flex-col items-center justify-center text-red-400 text-xl p-4">
-        <p>Error: {error}</p>
-        <p className="text-gray-400 text-base mt-2">Please check the user ID or try again later.</p>
-      </div>
-    );
+  if (isError) {
+    return <h1>Error Loading Cart</h1>;
   }
 
   return (
@@ -111,7 +107,9 @@ export default function Carts() {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <ShoppingCart size={28} className="text-orange-400" />
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-white">Your Cart</h1>
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-white">
+              Your Cart
+            </h1>
           </div>
         </div>
       </div>
@@ -123,7 +121,7 @@ export default function Carts() {
             <div className="space-y-6">
               {/* Cart Items */}
               <div className="space-y-4">
-                {cartItems.map(item => (
+                {cartsData?.map((item) => (
                   <div
                     key={item.id}
                     className="flex items-center gap-4 p-4 bg-gray-700 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300"
@@ -134,11 +132,17 @@ export default function Carts() {
                       className="w-20 h-20 sm:w-24 sm:h-24 rounded-md object-cover border border-gray-600"
                     />
                     <div className="flex-1">
-                      <h3 className="text-lg font-semibold text-white">{item.name}</h3>
-                      <p className="text-gray-300">₱{item.price.toFixed(2)} each</p>
+                      <h3 className="text-lg font-semibold text-white">
+                        {item.name}
+                      </h3>
+                      <p className="text-gray-300">
+                        ₱{item.price.toFixed(2)} each
+                      </p>
                       <div className="flex items-center gap-2 mt-2">
                         <button
-                          onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                          onClick={() =>
+                            updateQuantity(item.id, item.quantity - 1)
+                          }
                           className="px-2 py-1 bg-gray-600 rounded hover:bg-gray-500 text-white"
                           disabled={item.quantity <= 1}
                         >
@@ -146,7 +150,9 @@ export default function Carts() {
                         </button>
                         <span className="text-gray-300">{item.quantity}</span>
                         <button
-                          onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                          onClick={() =>
+                            updateQuantity(item.id, item.quantity + 1)
+                          }
                           className="px-2 py-1 bg-gray-600 rounded hover:bg-gray-500 text-white"
                         >
                           +
@@ -170,7 +176,9 @@ export default function Carts() {
 
               {/* Order Summary */}
               <div className="p-5 bg-gray-700 rounded-lg shadow-md">
-                <h3 className="text-xl font-semibold text-white mb-4">Order Summary</h3>
+                <h3 className="text-xl font-semibold text-white mb-4">
+                  Order Summary
+                </h3>
                 <div className="space-y-2 text-gray-300">
                   <div className="flex justify-between">
                     <span>Subtotal</span>
@@ -191,7 +199,9 @@ export default function Carts() {
               </div>
             </div>
           ) : (
-            <p className="text-gray-400 text-lg">Your Filipiniana cart is empty.</p>
+            <p className="text-gray-400 text-lg">
+              Your Filipiniana cart is empty.
+            </p>
           )}
         </div>
       </div>
