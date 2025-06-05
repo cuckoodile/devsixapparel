@@ -17,6 +17,7 @@ export default function useGetProduct() {
   });
 }
 async function useGetProductData() {
+<<<<<<< HEAD
   console.log("Fetching products data...");
     try {
         const response = await fetch(`${BASE_URL}/api/products/`, {
@@ -40,5 +41,26 @@ async function useGetProductData() {
     } catch (error) {
         console.error("Failed to fetch products:", error);
         throw new Error(`Failed to fetch products: ${error.message}`);
+=======
+  try {
+    const response = await fetch(`${BASE_URL}/api/products/`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+>>>>>>> b55d27f (doing productlist)
     }
+
+    const res = await response.json();
+
+    console.log("Product data fetched successfully:", res);
+    return res.data ?? res ?? null;
+  } catch (error) {
+    console.error(`Failed to fetch product: ${error.message}`);
+    return null;
+  }
 }

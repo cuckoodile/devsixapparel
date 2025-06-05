@@ -1,6 +1,7 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { BASE_URL } from "../../api_connection";
 
+<<<<<<< HEAD
 export default function useGetProductDataID(id) {
   const queryClient = useQueryClient();
 
@@ -25,6 +26,30 @@ export default function useGetProductDataID(id) {
           "Content-Type": "application/json",
         },
       });
+=======
+export default function useGetProductId(id) {
+    const queryClient = useQueryClient();
+    return useQuery({
+        queryKey: ["productID"],
+        queryFn: () => fetchProductId(id),
+        refetchOnWindowFocus: true,
+        refetchOnReconnect: true,
+        retry: false,
+        staleTime: 1000 * 60 * 5,
+        onSuccess: () => {
+            queryClient.invalidateQueries(["productID"]);
+        },
+    });
+    async function fetchProductId(id) {
+        console.log("Fetching product id: ", id)
+        try {
+            const response = await fetch(`${BASE_URL}/api/products/${id}`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+>>>>>>> b55d27f (doing productlist)
 
       if (!response.ok) {
         throw new Error("Network response was not ok");
