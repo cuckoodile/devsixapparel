@@ -4,6 +4,7 @@ import { ShoppingCart, Trash2, ChevronRight } from "lucide-react";
 import useGetCarts from "../../api/hooks/carts/useGetCarts";
 import useDeleteCart from "../../api/hooks/carts/useDeleteCart";
 import isAuthenTicated from "../../components/HOC/isAuthenticated";
+import Checkout from "../../components/modals/Checkout";
 
 function Carts() {
   const userToken = sessionStorage.getItem("user");
@@ -11,80 +12,12 @@ function Carts() {
   const { data: cartsData, isLoading, isError } = useGetCarts(userToken);
 
   const deleteCartMutation = useDeleteCart();
-  // const paramsId = useParams().id;
-  // const [cartItems, setCartItems] = useState([]);
-  // const [loading, setLoading] = useState(true);
-  // const [error, setError] = useState(null);
 
-  // useEffect(() => {
-  //   const fetchCartData = async () => {
-  //     try {
-  //       setLoading(true);
-  //       setError(null);
-
-  //       await new Promise((resolve) => setTimeout(resolve, 800));
-
-  //       // Mock cart data with Philippine fashion items
-  //       const mockCart = {
-  //         2: [
-  //           {
-  //             id: "item001",
-  //             name: "Barong Tagalog (Piña Fabric)",
-  //             price: 4500.0,
-  //             quantity: 1,
-  //             image:
-  //               "https://i.pinimg.com/736x/85/12/9a/85129abc5df4216050f354b8188861a3.jpg",
-  //           },
-  //           {
-  //             id: "item002",
-  //             name: "Terno Dress (Modern Filipiniana)",
-  //             price: 6500.0,
-  //             quantity: 1,
-  //             image:
-  //               "https://i.pinimg.com/736x/85/12/9a/85129abc5df4216050f354b8188861a3.jpg",
-  //           },
-  //           {
-  //             id: "item003",
-  //             name: "Handwoven Banig Clutch",
-  //             price: 1200.0,
-  //             quantity: 2,
-  //             image:
-  //               "https://i.pinimg.com/736x/85/12/9a/85129abc5df4216050f354b8188861a3.jpg",
-  //           },
-  //         ],
-  //       };
-
-  //       const data = mockCart[paramsId] || [];
-
-  //       setCartItems(data);
-  //     } catch (err) {
-  //       setError("Failed to load cart data.");
-  //       console.error("Error fetching cart data:", err);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
-
-  //   if (paramsId) {
-  //     fetchCartData();
-  //   } else {
-  //     setLoading(false);
-  //     setError("No user ID provided.");
-  //   }
-  // }, [paramsId]);
-
-  // const updateQuantity = (itemId, newQuantity) => {
-  //   if (newQuantity < 1) return;
-  //   setCartItems((prevItems) =>
-  //     prevItems.map((item) =>
-  //       item.id === itemId ? { ...item, quantity: newQuantity } : item
-  //     )
-  //   );
-  // };
+  const [isModalVisible, setModalVisible] = useState(false);
 
   const removeItem = (itemId) => {
     console.log("Removing item with ID:", itemId);
-    deleteCartMutation.mutate({token:userToken ,id:itemId});
+    deleteCartMutation.mutate({ token: userToken, id: itemId });
   };
 
   const getSubtotal = () => {
@@ -93,14 +26,6 @@ function Carts() {
       0
     );
   };
-
-  // const calculateTax = (subtotal) => {
-  //   return subtotal * 0.12; // Assuming 12% tax rate
-  // };
-
-  // const subtotal = calculateSubtotal();
-  // const tax = calculateTax(subtotal);
-  // const total = subtotal + tax;
 
   if (isLoading) {
     return <h1>Loading Cart...</h1>;
@@ -112,6 +37,9 @@ function Carts() {
 
   return (
     <div className="h-screen w-428 bg-gray-900 text-white font-sans overflow-hidden flex flex-col">
+      {/* Modal */}
+      {isModalVisible && <Checkout visibility={setModalVisible} />}
+
       {/* Cart Header */}
       <div className="flex-shrink-0 bg-gray-800 p-6 shadow-xl border-b border-gray-700">
         <div className="flex items-center justify-between">
@@ -199,7 +127,7 @@ function Carts() {
                   <span>₱{getSubtotal().toFixed(2)}</span>
                 </div>
               </div>
-              <button className="w-full mt-4 px-6 py-2 bg-orange-600 hover:bg-orange-700 text-white font-semibold rounded-lg shadow-md transition-colors duration-300 flex items-center justify-center gap-2">
+              <button onClick={() => setModalVisible(true)} className="w-full mt-4 px-6 py-2 bg-orange-600 hover:bg-orange-700 text-white font-semibold rounded-lg shadow-md transition-colors duration-300 flex items-center justify-center gap-2">
                 Proceed to Checkout <ChevronRight size={20} />
               </button>
             </div>
