@@ -18,6 +18,7 @@ import {
 import { useParams } from "react-router-dom";
 import useGetProductID from "../api/hooks/products/useGetProductID";
 import useCreateCart from "../api/hooks/carts/usePostCart";
+
 export default function Productdetails() {
   const postCartMutation = useCreateCart();
   const userToken = sessionStorage.getItem("user");
@@ -42,75 +43,6 @@ export default function Productdetails() {
   const [showSizeGuide, setShowSizeGuide] = useState(false);
   const [addedToCart, setAddedToCart] = useState(false);
 
-  // Mock product data - in real app, fetch based on ID
-  // useEffect(() => {
-  //   const mockProduct = {
-  //     id: 1,
-  //     name: "Barong Tagalog Modern Fit",
-  //     price: 2999,
-  //     originalPrice: 3499,
-  //     category: "traditional",
-  //     rating: 4.8,
-  //     reviews: 24,
-  //     isNew: true,
-  //     inStock: true,
-  //     stockCount: 15,
-  //     images: [
-  //       "https://i.pinimg.com/736x/85/12/9a/85129abc5df4216050f354b8188861a3.jpg",
-  //       "https://i.pinimg.com/736x/85/12/9a/85129abc5df4216050f354b8188861a3.jpg",
-  //       "https://i.pinimg.com/736x/85/12/9a/85129abc5df4216050f354b8188861a3.jpg",
-  //       "https://i.pinimg.com/736x/85/12/9a/85129abc5df4216050f354b8188861a3.jpg",
-  //       "https://i.pinimg.com/736x/85/12/9a/85129abc5df4216050f354b8188861a3.jpg",
-
-  //       "https://i.pinimg.com/736x/85/12/9a/85129abc5df4216050f354b8188861a3.jpg"
-  //     ],
-  //     colors: [
-  //       { name: "White", value: "#ffffff", inStock: true },
-  //       { name: "Cream", value: "#f5f5dc", inStock: true },
-  //       { name: "Light Blue", value: "#add8e6", inStock: false }
-  //     ],
-  //     sizes: [
-  //       { name: "XS", inStock: true },
-  //       { name: "S", inStock: true },
-  //       { name: "M", inStock: true },
-  //       { name: "L", inStock: true },
-  //       { name: "XL", inStock: true },
-  //       { name: "XXL", inStock: false }
-  //     ],
-  //     description: "This elegant modern fit Barong Tagalog represents the perfect fusion of traditional Filipino craftsmanship and contemporary design. Made from premium Jusi fabric, it features intricate embroidery that tells the story of our rich cultural heritage. The modern cut ensures a comfortable fit while maintaining the dignity and elegance of this iconic Filipino formal wear.",
-  //     features: [
-  //       "Premium Jusi fabric construction",
-  //       "Hand-embroidered traditional patterns",
-  //       "Modern tailored fit",
-  //       "Moisture-wicking properties",
-  //       "Easy care - machine washable",
-  //       "Made by local Filipino artisans"
-  //     ],
-  //     specifications: {
-  //       "Material": "100% Jusi (Banana Silk)",
-  //       "Origin": "Handcrafted in Lumban, Laguna",
-  //       "Care": "Machine wash cold, hang dry",
-  //       "Fit": "Modern tailored fit",
-  //       "Occasion": "Formal events, weddings, cultural celebrations"
-  //     }
-  //   };
-
-  // useEffect(() => {
-  //   if (productDetails) {
-  //     const initialColor = productDetails?.colors[0].color;
-  //     setSelectedColor(initialColor);
-
-  //     const defaultSize = productDetails?.sizes.find(
-  //       (sizes) => sizes.name === "M" && sizes.inStock
-  //     );
-  //     setSelectedSize(
-  //       defaultSize?.name ||
-  //         productDetails?.sizes.find((size) => size.inStock)?.name ||
-  //         ""
-  //     );
-  //   }
-  // }, [productDetails]);
-
   const handleQuantityChange = (action) => {
     if (action === "increase" && quantity < productDetails?.stockCount) {
       setQuantity((prev) => prev + 1);
@@ -124,13 +56,26 @@ export default function Productdetails() {
       alert("No product id.");
       return;
     }
+    const product_id = productDetails.id;
     postCartMutation.mutate({
-      data: {
-        product: productDetails.id,
+        product_id: product_id,
         quantity: quantity,
+        token: userToken,
+    },
+    {
+      onSuccess: () => {
+        setAddedToCart(true);
+        setTimeout(() => {
+          setAddedToCart(false);
+        }, 2000);
+        alert("Product added to cart successfully!");
       },
-      token: userToken,
+      onError: (error) => {
+        console.error("Error adding to cart:", error);
+        alert("Failed to add to cart. Please try again.");
+      },
     });
+
   };
 
   const reviews = [

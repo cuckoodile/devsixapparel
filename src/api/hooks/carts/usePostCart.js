@@ -5,7 +5,7 @@ export default function useCreateCart() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ data, token }) => PostCartData(data, token),
+    mutationFn: ({ product_id, quantity, token }) => PostCartData({ product_id, quantity, token }),
     mutationKey: ["carts"],
     onSuccess: () => {
       queryClient.invalidateQueries(["carts"]);
@@ -13,10 +13,10 @@ export default function useCreateCart() {
   });
 }
 
-async function PostCartData(productId, token) {
+async function PostCartData({ product_id, quantity, token }) {
   const cartData = {
-    product: parseInt(productId),
-    quantity: 1,
+    product_id,
+    quantity,
   };
 
   console.log("Cart Data:", cartData, "Token:", token);
