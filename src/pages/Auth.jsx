@@ -27,6 +27,18 @@ export default function Auth() {
         queryClient.invalidateQueries(["user"]); // Use the initialized queryClient
         console.log("To be placed in localSession data: ", data.access);
         sessionStorage.setItem("user", data.access); // Store the response in sessionStorage
+
+        try {
+          const payload = data.access.split('.')[1];
+          const decodedPayload = JSON.parse(atob(payload));
+          console.log("Decoded token payload:", decodedPayload);
+          
+          // Store the user ID
+          sessionStorage.setItem("userId", decodedPayload.user_id);
+        } catch (error) {
+          console.error("Error decoding token:", error);
+        }
+        
         navigate("/"); // Navigate to the home page or another route
       },
     });

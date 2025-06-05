@@ -6,7 +6,7 @@ export default function useGetCategories() {
   const queryClient = useQueryClient();
   return useQuery({
     queryKey: ["categories"],
-    queryFn: useGeCategoriesData,
+    queryFn: useGetCategoriesData,
     refetchOnWindowFocus: true,
     refetchOnReconnect: true,
     retry: false,
@@ -17,7 +17,7 @@ export default function useGetCategories() {
   });
 }
 
-async function useGeCategoriesData() {
+async function useGetCategoriesData() {
   console.log("Fetching categories data...");
 
   try {
