@@ -7,7 +7,7 @@ export default function Header() {
   const userId = sessionStorage.getItem("userId");
 
   return (
-    <div className="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 sticky inset-0 border-b border-gray-700 shadow-lg">
+    <div className="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 sticky inset-0 border-b border-gray-700 shadow-lg z-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center space-x-6">

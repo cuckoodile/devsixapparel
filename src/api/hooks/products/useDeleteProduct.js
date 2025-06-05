@@ -1,11 +1,11 @@
 import { BASE_URL } from "../../api_connection";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-export default function useCreateProduct(data, token, id) {
+export default function useDeleteProduct(token, id) {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: useCreateProductData(data, token, id),
+    mutationFn: () => deleteProductApi(token, id),
     mutationKey: ["products"],
     onSuccess: () => {
       queryClient.invalidateQueries(["products"]);
@@ -13,22 +13,24 @@ export default function useCreateProduct(data, token, id) {
   });
 }
 
-async function useCreateProductData({ data, token, id }) {
+async function deleteProductApi({ token, id }) {
+  console.log("Attempting to delete product id: ", id, " with token: ", token);
+
   try {
     const response = await fetch(`${BASE_URL}/api/products/${id}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
-        Accept: "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify(data),
     });
+
     if (!response.ok) {
       throw new Error("Network response was not ok");
     }
-    const res = await response.json();
     
+    const res = await response.json();
+
     console.log("Product deleted successfully:", res);
     return res.data;
   } catch (error) {

@@ -1,11 +1,11 @@
 import { BASE_URL } from "../../api_connection";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-export default function useCreateProduct(data, token, id) {
+export default function usePatchProduct(data, token, id) {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: useCreateProductData(data, token, id),
+    mutationFn: () => patchProductApi(data, token, id),
     mutationKey: ["products"],
     onSuccess: () => {
       queryClient.invalidateQueries(["products"]);
@@ -13,7 +13,7 @@ export default function useCreateProduct(data, token, id) {
   });
 }
 
-async function useCreateProductData({ data, token, id }) {
+async function patchProductApi({ data, token, id }) {
   try {
     const response = await fetch(`${BASE_URL}/api/products/${id}`, {
       method: "PATCH",
@@ -24,9 +24,11 @@ async function useCreateProductData({ data, token, id }) {
       },
       body: JSON.stringify(data),
     });
+
     if (!response.ok) {
       throw new Error("Network response was not ok");
     }
+
     const res = await response.json();
     
     console.log("Product updated successfully:", res);
