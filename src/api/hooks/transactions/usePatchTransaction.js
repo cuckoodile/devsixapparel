@@ -1,11 +1,11 @@
 import { BASE_URL } from "../../api_connection";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-export default function useCreateTransaction(data, token, id) {
+export default function usePatchTransaction() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: useCreateTransactionData(data, token, id),
+    mutationFn: ({data, token, id}) => usePatchTransactionData({data, token, id}),
     mutationKey: ["transactions"],
     onSuccess: () => {
       queryClient.invalidateQueries(["transactions"]);
@@ -13,9 +13,11 @@ export default function useCreateTransaction(data, token, id) {
   });
 }
 
-async function useCreateTransactionData({ data, token, id }) {
+async function usePatchTransactionData({ data, token, id }) {
+  console.log("usePatchTransactionData called with data:", data, "token:", token, "id:", id);
+
   try {
-    const response = await fetch(`${BASE_URL}/api/transactions/${id}`, {
+    const response = await fetch(`${BASE_URL}/api/transactions/${id}/`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",

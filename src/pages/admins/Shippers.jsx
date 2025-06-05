@@ -182,9 +182,6 @@ export default function Shippers() {
                 )}
                 {shippersData?.map((shipper) => (
                   <tr key={shipper?.id} className="hover:bg-gray-50">
-                    {console.log(
-                      `Shipper id: ${shipper?.id} data: ${shipper?.user.username}`
-                    )}
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="text-sm font-medium text-gray-900">
                         {shipper?.user.username}

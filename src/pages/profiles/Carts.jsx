@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { ShoppingCart, Trash2, ChevronRight } from "lucide-react";
 import useGetCarts from "../../api/hooks/carts/useGetCarts";
+import useDeleteCart from "../../api/hooks/carts/useDeleteCart";
 import isAuthenTicated from "../../components/HOC/isAuthenticated";
 
 function Carts() {
@@ -9,6 +10,7 @@ function Carts() {
 
   const { data: cartsData, isLoading, isError } = useGetCarts(userToken);
 
+  const deleteCartMutation = useDeleteCart();
   // const paramsId = useParams().id;
   // const [cartItems, setCartItems] = useState([]);
   // const [loading, setLoading] = useState(true);
@@ -80,9 +82,10 @@ function Carts() {
   //   );
   // };
 
-  // const removeItem = (itemId) => {
-  //   setCartItems((prevItems) => prevItems.filter((item) => item.id !== itemId));
-  // };
+  const removeItem = (itemId) => {
+    console.log("Removing item with ID:", itemId);
+    deleteCartMutation.mutate({token:userToken ,id:itemId});
+  };
 
 const getSubtotal = () => {
   return cartsData.reduce((total, product) => total + product.product.price * product.quantity, 0);
@@ -130,7 +133,7 @@ const getSubtotal = () => {
                   const product = item?.product
                   return (
                     <div
-                      key={product?.id}
+                      key={item?.id}
                       className="flex items-center gap-4 p-4 bg-gray-700 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300"
                     >
                       <img
@@ -172,6 +175,7 @@ const getSubtotal = () => {
                         <p className="text-gray-300 font-semibold">
                           ₱{(product?.price * item?.quantity).toFixed(2)}
                         </p>
+                        {console.log("Item ID: ", item?.id)}
                         <button
                           onClick={() => removeItem(item?.id)}
                           className="mt-2 text-red-400 hover:text-red-300 flex items-center text-sm"
