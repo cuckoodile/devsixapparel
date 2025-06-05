@@ -4,8 +4,8 @@ import { BASE_URL } from "../../api_connection";
 export default function useGetCarts(token) {
   const queryClient = useQueryClient();
   return useQuery({
-    queryKey: ["carts"],
-    queryFn: useGetCartsData(token),
+    queryKey: ["carts",token],
+    queryFn: () => useGetCartsData(token),
     refetchOnWindowFocus: true,
     refetchOnReconnect: true,
     staletime: 1000 * 60 * 5,
@@ -17,8 +17,14 @@ export default function useGetCarts(token) {
 }
 async function useGetCartsData(token) {
   console.log("Fetching carts data...", token);
+
+  console.log("Current token being sent:", token); // Add this line
+  
+  if (!token) {
+    throw new Error("No authentication token provided");
+  }
   try {
-    const response = await fetch(`${BASE_URL}/api/carts/`, {
+    const response = await fetch(`${BASE_URL}api/carts/`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -33,7 +39,7 @@ async function useGetCartsData(token) {
     const res = await response.json();
 
     console.log("Carts data fetched successfully:", res);
-    return res.data;
+    return res.data ?? res ?? null;
   } catch (error) {
     throw new Error(`Failed to fetch cart: ${error.message}`);
   }

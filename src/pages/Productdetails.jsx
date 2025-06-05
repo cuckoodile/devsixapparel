@@ -29,8 +29,8 @@ export default function Productdetails() {
     inStock: true,
   });
   const [selectedImage, setSelectedImage] = useState(0);
-  // const [selectedSize, setSelectedSize] = useState("");
-  // const [selectedColor, setSelectedColor] = useState("");
+  const [selectedSize, setSelectedSize] = useState("");
+  const [selectedColor, setSelectedColor] = useState("");
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState("description");
   const [showSizeGuide, setShowSizeGuide] = useState(false);
@@ -89,13 +89,21 @@ export default function Productdetails() {
   //     }
   //   };
 
-  //   setProduct(mockProduct);
-  //   const initialColor = mockProduct.colors.find(color => color.inStock)?.name || '';
-  //   setSelectedColor(initialColor);
+  useEffect(() => {
+    if (productDetails) {
+      const initialColor = productDetails?.colors[0].color;
+      setSelectedColor(initialColor);
 
-  //   const defaultSize = mockProduct.sizes.find(size => size.name === 'M' && size.inStock);
-  //   setSelectedSize(defaultSize?.name || mockProduct.sizes.find(size => size.inStock)?.name || '');
-  // }, []);
+      const defaultSize = productDetails?.sizes.find(
+        (sizes) => sizes.name === "M" && sizes.inStock
+      );
+      setSelectedSize(
+        defaultSize?.name ||
+          productDetails?.sizes.find((size) => size.inStock)?.name ||
+          ""
+      );
+    }
+  }, [productDetails]);
 
   const handleQuantityChange = (action) => {
     if (action === "increase" && quantity < productDetails?.stockCount) {
@@ -105,22 +113,22 @@ export default function Productdetails() {
     }
   };
 
-  const handleAddToCart = () => {
-    if (!product || !selectedSize || !selectedColor) {
-      alert("Please select a size and color before adding to cart.");
-      return;
-    }
+  // const handleAddToCart = () => {
+  //   if (!product || !selectedSize || !selectedColor) {
+  //     alert("Please select a size and color before adding to cart.");
+  //     return;
+  //   }
 
-    console.log("Adding to cart:", {
-      productId: product.id,
-      quantity,
-      selectedSize,
-      selectedColor,
-    });
-    // Simulate adding to cart successfully
-    setAddedToCart(true);
-    setTimeout(() => setAddedToCart(false), 3000); // Reset after 3 seconds
-  };
+  //   console.log("Adding to cart:", {
+  //     productId: product.id,
+  //     quantity,
+  //     selectedSize,
+  //     selectedColor,
+  //   });
+  //   // Simulate adding to cart successfully
+  //   setAddedToCart(true);
+  //   setTimeout(() => setAddedToCart(false), 3000); // Reset after 3 seconds
+  // };
 
   const reviews = [
     {
@@ -166,8 +174,10 @@ export default function Productdetails() {
   // Determine if the currently selected size and color combination is in stock
   const isCurrentSelectionInStock = product.inStock;
   console.log("in Stock");
-  // &&product.colors.find((c) => c.name === selectedColor)?.inStock &&
+  // product.colors.find((c) => c.name === selectedColor)?.inStock &&
   // product.sizes.find((s) => s.name === selectedSize)?.inStock;
+
+  console.log("ProductDetails: ", productDetails);
 
   return (
     <div className="min-h-screen w-screen bg-gray-900 text-white">
@@ -179,7 +189,7 @@ export default function Productdetails() {
               {/* Main Image */}
               <div className="relative aspect-[4/4] bg-gray-800 rounded-xl overflow-hidden">
                 <img
-                  src={productDetails?.images[selectedImage]}
+                  // src={productDetails?.images[0]}
                   alt={productDetails?.name}
                   className="w-full h-full object-cover"
                 />
@@ -190,7 +200,7 @@ export default function Productdetails() {
                 )}
 
                 {/* Navigation Arrows */}
-                {productDetails?.images.length > 0 && (
+                {/* {productDetails?.images.length > 0 && (
                   <>
                     <button
                       onClick={() =>
@@ -205,7 +215,7 @@ export default function Productdetails() {
                     <button
                       onClick={() =>
                         setSelectedImage((prev) =>
-                          prev === product.images.length - 1 ? 0 : prev + 1
+                          prev === product?.images.length - 1 ? 0 : prev + 1
                         )
                       }
                       className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition-colors"
@@ -213,7 +223,7 @@ export default function Productdetails() {
                       <ChevronRight size={20} />
                     </button>
                   </>
-                )}
+                )} */}
               </div>
 
               {/* Thumbnail Images */}
@@ -270,17 +280,17 @@ export default function Productdetails() {
                 {/* Price */}
                 <div className="flex items-center gap-3 mb-4">
                   <span className="text-3xl font-bold text-orange-400">
-                    ₱{productDetails?.price.toLocaleString()}
+                    {productDetails?.price.toLocaleString()}
                   </span>
                   {product.originalPrice && (
                     <>
                       <span className="text-xl text-gray-500 line-through">
-                        ₱{product.originalPrice.toLocaleString()}
+                        {product?.price.toLocaleString()}
                       </span>
                       <span className="bg-red-500 text-white text-sm px-2 py-1 rounded font-medium">
                         Save ₱
                         {(
-                          product.originalPrice - product.price
+                          product.originalPrice - product?.price
                         ).toLocaleString()}
                       </span>
                     </>
@@ -293,7 +303,7 @@ export default function Productdetails() {
                     <>
                       <div className="w-3 h-3 bg-green-500 rounded-full"></div>
                       <span className="text-green-400">
-                        In Stock ({product.stockCount} available)
+                        In Stock ({productDetails?.stock} available)
                       </span>
                     </>
                   ) : (
@@ -306,22 +316,30 @@ export default function Productdetails() {
               </div>
 
               {/* Color Selection */}
-              {/* <div>
+              <div>
                 <div className="flex items-center gap-2 mb-3">
                   <span className="font-medium">Color:</span>
-                  <span className="text-orange-400">{selectedColor || 'Please select'}</span>
+                  <span className="text-orange-400">
+                    {selectedColor || "Please select"}
+                  </span>
                 </div>
                 <div className="flex gap-2">
-                  {product.colors.map((color) => (
+                  {productDetails?.colors.map((color) => (
                     <button
                       key={color.name}
-                      onClick={() => color.inStock && setSelectedColor(color.name)}
+                      onClick={() =>
+                        color.inStock && setSelectedColor(color.name)
+                      }
                       disabled={!color.inStock}
                       className={`relative w-10 h-10 rounded-full border-2 transition-all ${
                         selectedColor === color.name
-                          ? 'border-orange-500 ring-2 ring-orange-500/30'
-                          : 'border-gray-600'
-                      } ${!color.inStock ? 'opacity-50 cursor-not-allowed' : 'hover:border-orange-400'}`}
+                          ? "border-orange-500 ring-2 ring-orange-500/30"
+                          : "border-gray-600"
+                      } ${
+                        !color.inStock
+                          ? "opacity-50 cursor-not-allowed"
+                          : "hover:border-orange-400"
+                      }`}
                       style={{ backgroundColor: color.value }}
                     >
                       {!color.inStock && (
@@ -332,14 +350,16 @@ export default function Productdetails() {
                     </button>
                   ))}
                 </div>
-              </div> */}
+              </div>
 
               {/* Size Selection */}
               <div>
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center gap-2">
                     <span className="font-medium">Size:</span>
-                    <span className="text-orange-400">{selectedSize || 'Please select'}</span>
+                    <span className="text-orange-400">
+                      {selectedSize || "Please select"}
+                    </span>
                   </div>
                   <button
                     onClick={() => setShowSizeGuide(!showSizeGuide)}
@@ -349,22 +369,22 @@ export default function Productdetails() {
                   </button>
                 </div>
                 <div className="grid grid-cols-6 gap-2">
-                  {productDetil?.specifications.name.name(() => (
+                  {/* {productDetails?.specifications(() => (
                     <button
                       key={size.name}
-                      onClick={() => size.inStock && setSelectedSize(size.name)}
+                      onClick={() => size.inStock && setSelectedSize(size?.name)}
                       disabled={!size.inStock}
                       className={`py-2 px-3 border rounded-lg transition-all text-center ${
                         selectedSize === size.name
-                          ? 'border-orange-500 bg-orange-500 text-white'
+                          ? "border-orange-500 bg-orange-500 text-white"
                           : size.inStock
-                            ? 'border-gray-600 hover:border-orange-400 text-gray-300'
-                            : 'border-gray-700 text-gray-600 cursor-not-allowed line-through'
+                          ? "border-gray-600 hover:border-orange-400 text-gray-300"
+                          : "border-gray-700 text-gray-600 cursor-not-allowed line-through"
                       }`}
                     >
                       {size.name}
                     </button>
-                  ))}
+                  ))} */}
                 </div>
               </div>
 
@@ -398,7 +418,7 @@ export default function Productdetails() {
 
                 {/* Action Buttons */}
                 <div className="flex gap-3">
-                  <button
+                  {/* <button
                     onClick={handleAddToCart}
                     disabled={
                       !isCurrentSelectionInStock ||
@@ -419,7 +439,7 @@ export default function Productdetails() {
                         Add to Cart
                       </>
                     )}
-                  </button>
+                  </button> */}
                   <button className="p-3 rounded-lg border border-gray-600 text-gray-400 hover:border-orange-500 hover:text-orange-500 transition-colors">
                     <Share2 size={18} />
                   </button>
@@ -475,14 +495,14 @@ export default function Productdetails() {
               {activeTab === "description" && (
                 <div className="max-w-4xl">
                   <p className="text-gray-300 text-lg leading-relaxed mb-6">
-                    {product.description}
+                    {productDetails?.description}
                   </p>
                   <div>
                     <h3 className="text-white font-semibold text-xl mb-4">
                       Key Features
                     </h3>
                     <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                      {product.features.map((feature, index) => (
+                      {product?.features?.map((feature, index) => (
                         <li
                           key={index}
                           className="flex items-center gap-3 text-gray-300"
@@ -502,19 +522,9 @@ export default function Productdetails() {
               {activeTab === "specifications" && (
                 <div className="max-w-4xl">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {Object.entries(product.specifications).map(
-                      ([key, value]) => (
-                        <div
-                          key={key}
-                          className="flex justify-between py-3 border-b border-gray-700"
-                        >
-                          <span className="font-medium text-gray-300">
-                            {key}:
-                          </span>
-                          <span className="text-white">{value}</span>
-                        </div>
-                      )
-                    )}
+                    <p>{productDetails?.specification?.Material}</p>
+                    <p>{productDetails?.specification?.Brand}</p>
+                    <p>{productDetails?.specification?.Model}</p>
                   </div>
                 </div>
               )}
@@ -528,7 +538,7 @@ export default function Productdetails() {
                       </h3>
                       <div className="flex items-center gap-4">
                         <div className="flex items-center gap-1">
-                          {[...Array(5)].map((_, i) => (
+                          {[...Array(5)]?.map((_, i) => (
                             <Star
                               key={i}
                               size={20}
@@ -555,7 +565,7 @@ export default function Productdetails() {
                   </div>
 
                   <div className="space-y-6">
-                    {reviews.map((review) => (
+                    {reviews?.map((review) => (
                       <div
                         key={review.id}
                         className="bg-gray-800 rounded-lg p-6 border border-gray-700"
