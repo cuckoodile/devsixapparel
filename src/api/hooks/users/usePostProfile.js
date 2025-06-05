@@ -1,11 +1,11 @@
 import { BASE_URL } from "../../api_connection";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-export default function useDeleteProfile(data, token, id) {
+export default function useCreateProfile(data, token) {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: useDeleteProfileData(data, token, id),
+    mutationFn: useCreateProfileData(data, token),
     mutationKey: ["profiles"],
     onSuccess: () => {
       queryClient.invalidateQueries(["profiles"]);
@@ -13,10 +13,10 @@ export default function useDeleteProfile(data, token, id) {
   });
 }
 
-async function useDeleteProfileData({ data, token, id }) {
+async function useCreateProfileData({ data, token }) {
   try {
-    const response = await fetch(`${BASE_URL}/api/profiles/${id}`, {
-      method: "DELETE",
+    const response = await fetch(`${BASE_URL}/api/profiles/create/`, {
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
@@ -29,10 +29,10 @@ async function useDeleteProfileData({ data, token, id }) {
     }
     const res = await response.json();
     
-    console.log("This User deleted successfully:", res);
+    console.log("Profile created successfully:", res);
     return res.data;
   } catch (error) {
-    throw new Error("Failed to delete this user:" + error.message);
+    throw new Error("Failed to create profiles:" + error.message);
     // throw new Error(`Failed to create product: ${error.message}`);
   }
 }

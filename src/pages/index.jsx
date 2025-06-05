@@ -1,77 +1,81 @@
 import React from "react";
 import { ArrowRight, Star, Sparkles } from "lucide-react";
+import useGetProduct from "../api/hooks/products/useGetProducts"
+import useGetCategories from "../api/hooks/categories/useGetCategories";
 
 export default function Index() {
+  const { data: products, isLoading: productsLoading, isError: productsError } = useGetProduct();
+  const { data: categories, isLoading: categoriesLoading, isError: categoriesError } = useGetCategories();
+
+  // Your original navigate function that logs the path
   const navigate = (path) => {
     console.log(`Navigating to: ${path}`);
   };
 
-  const newArrivals = [
+  // console.log("Component Render Cycle:");
+  // console.log("  categories:", categories);
+  // console.log("  categoriesLoading:", categoriesLoading);
+  // console.log("  categoriesError:", categoriesError);
+  // console.log("  Does categories exist and have length > 0?", categories && categories.length > 0);
+  // Get newest products by newly created, limits to 4
+  const newArrivals = products
+    ? [...products].sort((a, b) => new Date(b.created_at) - new Date(a.created_at)).slice(0, 4)
+    : [];
+
+  // since wala pang image, maglalagay tayo ng gradient nalang 
+  const defaultCategoryGradients = [
     {
-      id: 1,
-      name: "Barong Tagalog Modern Fit",
-      price: "₱2,999",
-      image: "https://i.pinimg.com/736x/85/12/9a/85129abc5df4216050f354b8188861a3.jpg",
-      alt: "Modern fit Barong Tagalog",
+      border: 'from-blue-500 to-purple-500',
+      main: 'from-blue-500/30 to-purple-500/30',
+      hover: 'from-blue-400/50 to-purple-400/50',
+      text: 'from-blue-400 to-purple-400',
     },
     {
-      id: 2,
-      name: "Filipiniana Dress - Emerald",
-      price: "₱3,499",
-      image: "https://i.pinimg.com/736x/85/12/9a/85129abc5df4216050f354b8188861a3.jpg",
-      alt: "Emerald Filipiniana dress",
+      border: 'from-green-500 to-teal-500',
+      main: 'from-green-500/30 to-teal-500/30',
+      hover: 'from-green-400/50 to-teal-400/50',
+      text: 'from-green-400 to-teal-400',
     },
     {
-      id: 3,
-      name: "Baybayin Print Tee",
-      price: "₱799",
-      image: "https://i.pinimg.com/736x/85/12/9a/85129abc5df4216050f354b8188861a3.jpg",
-      alt: "Baybayin print t-shirt",
+      border: 'from-yellow-500 to-orange-500',
+      main: 'from-yellow-500/30 to-orange-500/30',
+      hover: 'from-yellow-400/50 to-orange-400/50',
+      text: 'from-yellow-400 to-orange-400',
     },
     {
-      id: 4,
-      name: "Philippine Flag Hoodie",
-      price: "₱1,499",
-      image: "https://i.pinimg.com/736x/85/12/9a/85129abc5df4216050f354b8188861a3.jpg",
-      alt: "Philippine flag hoodie",
+        border: 'from-pink-500 to-red-500',
+        main: 'from-pink-500/30 to-red-500/30',
+        hover: 'from-pink-400/50 to-red-400/50',
+        text: 'from-pink-400 to-red-400',
     },
   ];
 
-  const categories = [
-    {
-      name: "Heritage & Elegance",
-      description: "Timeless Barongs & Filipinianas crafted with authentic Filipino artistry and modern sophistication",
-      image: "https://i.pinimg.com/736x/85/12/9a/85129abc5df4216050f354b8188861a3.jpg",
-      alt: "Traditional Filipino clothing",
-      url: "/allproducts?category=traditional",
-      gradient: "from-blue-500/30 to-indigo-500/30",
-      hoverGradient: "from-blue-400/40 to-indigo-400/40",
-      textGradient: "from-blue-400 to-indigo-400",
-      borderGradient: "from-blue-500/50 to-indigo-500/50",
-    },
-    {
-      name: "Urban Filipino",
-      description: "Contemporary streetwear that celebrates Filipino culture with bold modern flair and urban edge",
-      image: "https://i.pinimg.com/736x/85/12/9a/85129abc5df4216050f354b8188861a3.jpg",
-      alt: "Urban Filipino streetwear",
-      url: "/allproducts?category=streetwear",
-      gradient: "from-orange-500/30 to-red-500/30",
-      hoverGradient: "from-orange-400/40 to-red-400/40",
-      textGradient: "from-orange-400 to-red-400",
-      borderGradient: "from-orange-500/50 to-red-500/50",
-    },
-    {
-      name: "Signature Touches",
-      description: "Handcrafted accessories that add authentic Filipino charm and distinctive character to every outfit",
-      image: "https://i.pinimg.com/736x/85/12/9a/85129abc5df4216050f354b8188861a3.jpg",
-      alt: "Filipino accessories",
-      url: "/allproducts?category=accessories",
-      gradient: "from-yellow-500/30 to-amber-500/30",
-      hoverGradient: "from-yellow-400/40 to-amber-400/40",
-      textGradient: "from-yellow-400 to-amber-400",
-      borderGradient: "from-yellow-500/50 to-amber-500/50",
-    },
-  ];
+  // Handle loading states for products
+  if (productsLoading || categoriesLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-900 text-white text-xl">
+        Loading data...
+      </div>
+    );
+  }
+
+  // debugging purposes, bahala kayo dyan code ko to!!!!!!!!!!!!!!!
+  if (productsError) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-900 text-red-500 text-xl">
+        Error loading products. Please try again later.
+      </div>
+    );
+  }
+
+  // debugging purposes, bahala kayo dyan code ko to 
+  if (categoriesError) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-900 text-red-500 text-xl">
+        Error loading categories. Some content might be missing.
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen w-full bg-gradient-to-b from-gray-900 via-slate-900 to-black">
@@ -139,7 +143,7 @@ export default function Index() {
                 <div className="aspect-[3/4] overflow-hidden relative">
                   <img
                     src={product.image}
-                    alt={product.alt}
+                    alt={product.alt || product.name}
                     className="w-full h-full object-cover transform group-hover:scale-110 group-hover:rotate-1 transition-transform duration-700"
                     loading="lazy"
                     onError={(e) => {
@@ -177,50 +181,61 @@ export default function Index() {
         </div>
 
         <div className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 gap-4 xs:gap-5 sm:gap-6 md:gap-8">
-          {categories.map((category, index) => (
-            <button
-              key={category.name}
-              onClick={() => navigate(category.url)}
-              className="group w-full text-left focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 focus:ring-offset-black relative"
-              aria-label={`View ${category.name} Collection`}
-              style={{ animationDelay: `${index * 0.2}s` }}
-            >
-              <div className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-lg xs:rounded-xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-3 hover:scale-105 border border-gray-700 hover:border-transparent relative">
-                {/* wag na palitan hirap nito- joe
-                gradient border effect */}
-                <div className={`absolute inset-0 bg-gradient-to-r ${category.borderGradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-lg xs:rounded-xl`} />
-                <div className="absolute inset-[1px] bg-gradient-to-br from-gray-800 to-gray-900 rounded-lg xs:rounded-xl" />
-                
-                <div className="relative">
-                  <div className="h-60 xs:h-64 sm:h-72 md:h-80 lg:h-96 overflow-hidden relative">
-                    <img
-                      src={category.image}
-                      alt={category.alt}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                      loading="lazy"
-                      onError={(e) => {
-                        e.target.src = `https://via.placeholder.com/500?text=${category.name}`;
-                      }}
-                    />
-                    <div className={`absolute inset-0 bg-gradient-to-br ${category.gradient} group-hover:${category.hoverGradient} transition-all duration-500`} />
-                    <div className="absolute inset-0 bg-gradient-to-t from-gray-900/80 via-gray-900/20 to-transparent" />
-                    
-                    {/* tol ito yung glowing effect on hover  */}
-                    <div className={`absolute inset-0 bg-gradient-to-br ${category.gradient} opacity-0 group-hover:opacity-30 transition-opacity duration-500 mix-blend-overlay`} />
+          {categories && categories.length > 0 ? (
+            categories.map((category, index) => {
+              // Get cycling gradients for categories
+              const currentGradients = defaultCategoryGradients[index % defaultCategoryGradients.length];
+//__________  // Generate a URL slug for navigation, even if it's just logged
+              const categoryUrl = `/categories/${category.name.toLowerCase().replace(/\s+/g, '-')}`;
+
+              return (
+                <button
+                  key={category.name} // Using name as key, consider adding a unique 'id' to categories data if available
+                  onClick={() => navigate(categoryUrl)} // Still logs the path, no actual navigation
+                  className="group w-full text-left focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 focus:ring-offset-black relative"
+                  aria-label={`View ${category.name} Collection`}
+                  style={{ animationDelay: `${index * 0.1}s` }}
+                >
+                  <div className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-lg xs:rounded-xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-3 hover:scale-105 border border-gray-700 hover:border-transparent relative">
+                    {/* Gradient border effect - uses predefined classes */}
+                    <div className={`absolute inset-0 bg-gradient-to-r ${currentGradients.border} opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-lg xs:rounded-xl`} />
+                    <div className="absolute inset-[1px] bg-gradient-to-br from-gray-800 to-gray-900 rounded-lg xs:rounded-xl" />
+
+                    <div className="relative">
+                      <div className="h-60 xs:h-64 sm:h-72 md:h-80 lg:h-96 overflow-hidden relative">
+                        {/* Placeholder image using category name */}
+                        <img
+                          src={`https://via.placeholder.com/500?text=${category.name}`}
+                          alt={category.name} // Alt text from category name
+                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                          loading="lazy"
+                        />
+                        {/* Main gradient overlay - uses predefined classes */}
+                        <div className={`absolute inset-0 bg-gradient-to-br ${currentGradients.main} group-hover:${currentGradients.hover} transition-all duration-500`} />
+                        <div className="absolute inset-0 bg-gradient-to-t from-gray-900/80 via-gray-900/20 to-transparent" />
+
+                        {/* Glowing effect on hover - uses predefined classes */}
+                        <div className={`absolute inset-0 bg-gradient-to-br ${currentGradients.main} opacity-0 group-hover:opacity-30 transition-opacity duration-500 mix-blend-overlay`} />
+                      </div>
+
+                      <div className="p-3 xs:p-4 sm:p-5 md:p-6 text-left relative">
+                        <h3 className={`text-base xs:text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-white mb-1 xs:mb-2 sm:mb-3 group-hover:bg-gradient-to-r group-hover:${currentGradients.text} group-hover:bg-clip-text group-hover:text-transparent transition-all duration-300`}>
+                          {category.name}
+                        </h3>
+                        <p className="text-gray-400 text-xs xs:text-sm sm:text-base leading-relaxed group-hover:text-gray-300 transition-colors duration-300 line-clamp-2">
+                          {/* Default description if not present */}
+                          {category.description || `Discover our unique ${category.name} collection.`}
+                        </p>
+                      </div>
+                    </div>
                   </div>
-                  
-                  <div className="p-3 xs:p-4 sm:p-5 md:p-6 text-left relative">
-                    <h3 className={`text-base xs:text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-white mb-1 xs:mb-2 sm:mb-3 group-hover:bg-gradient-to-r group-hover:${category.textGradient} group-hover:bg-clip-text group-hover:text-transparent transition-all duration-300`}>
-                      {category.name}
-                    </h3>
-                    <p className="text-gray-400 text-xs xs:text-sm sm:text-base leading-relaxed group-hover:text-gray-300 transition-colors duration-300 line-clamp-2">
-                      {category.description}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </button>
-          ))}
+                </button>
+              );
+            })
+          ) : (
+            // Display a message if no categories are found after loading
+            !categoriesLoading && <p className="col-span-full text-center text-gray-400 text-lg">No categories to display yet.</p>
+          )}
         </div>
       </section>
     </div>

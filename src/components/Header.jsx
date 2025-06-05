@@ -4,6 +4,8 @@ import { CircleUser, ShoppingCart } from "lucide-react";
 import NavigationText from "./Texts/NavigationText";
 
 export default function Header() {
+  const userId = sessionStorage.getItem("userId");
+
   return (
     <div className="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 sticky inset-0 border-b border-gray-700 shadow-lg">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -40,7 +42,7 @@ export default function Header() {
 
             <NavigationText 
               variant={"main"} 
-              to={"profile/69/"}
+              to={userId ? `/profile/${userId}/` : "/login"}
               className="text-gray-300 hover:text-green-400 transition-colors duration-200"
             >
               <CircleUser size={24} />

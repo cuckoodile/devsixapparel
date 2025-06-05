@@ -6,7 +6,7 @@ export default function useGetCategories() {
   const queryClient = useQueryClient();
   return useQuery({
     queryKey: ["categories"],
-    queryFn: useGeCategoriesData,
+    queryFn: useGetCategoriesData,
     refetchOnWindowFocus: true,
     refetchOnReconnect: true,
     retry: false,
@@ -17,7 +17,7 @@ export default function useGetCategories() {
   });
 }
 
-async function useGeCategoriesData() {
+async function useGetCategoriesData() {
   console.log("Fetching categories data...");
 
   try {
@@ -35,7 +35,7 @@ async function useGeCategoriesData() {
     const res = await response.json();
 
     console.log("Categories data fetched successfully:", res);
-    return res.data;
+    return res;
   } catch (error) {
     throw new Error(`Failed to fetch categories: ${error.message}`);
   }

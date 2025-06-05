@@ -5,18 +5,19 @@ export default function useGetProduct() {
   const queryClient = useQueryClient();
 
   return useQuery({
-    queryKey: ["product"],
+    queryKey: ["products"],
     queryFn: useGetProductData,
     refetchOnWindowFocus: true,
     refetchOnReconnect: true,
     retry: false,
     staleTime: 1000 * 60 * 5,
     onSuccess: () => {
-      queryClient.invalidateQueries(["product"]);
+      queryClient.invalidateQueries(["products"]);
     },
   });
 }
 async function useGetProductData() {
+  console.log("Fetching products data...");
     try {
         const response = await fetch(`${BASE_URL}/api/products/`, {
             method: "GET",
@@ -33,9 +34,11 @@ async function useGetProductData() {
         const res = await response.json();
 
         console.log("Product data fetched successfully:", res);
-        return res.data ?? res ?? null;
+        // return res.data ?? [];
+        const products = Array.isArray(res) ? res : res.data;
+        return products;
     } catch (error) {
-        console.error(`Failed to fetch product: ${error.message}`);
-        return null;
+        console.error("Failed to fetch products:", error);
+        throw new Error(`Failed to fetch products: ${error.message}`);
     }
 }
