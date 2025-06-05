@@ -24,7 +24,7 @@ async function useGetCartsData(token) {
     throw new Error("No authentication token provided");
   }
   try {
-    const response = await fetch(`${BASE_URL}api/carts/`, {
+    const response = await fetch(`${BASE_URL}/api/carts/`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

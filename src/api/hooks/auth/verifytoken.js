@@ -21,7 +21,7 @@ export default async function verifyToken(token) {
   console.log("Verifying token with: ", data)
 
   try {
-    const response = await fetch(`${BASE_URL}api/token/verify/`, {
+    const response = await fetch(`${BASE_URL}/api/token/verify/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

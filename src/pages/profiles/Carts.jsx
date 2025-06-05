@@ -10,7 +10,7 @@ function Carts() {
   const { data: cartsData, isLoading, isError } = useGetCarts(userToken);
 
   // const paramsId = useParams().id;
-  const [cartItems, setCartItems] = useState([]);
+  // const [cartItems, setCartItems] = useState([]);
   // const [loading, setLoading] = useState(true);
   // const [error, setError] = useState(null);
 
@@ -84,17 +84,17 @@ function Carts() {
   //   setCartItems((prevItems) => prevItems.filter((item) => item.id !== itemId));
   // };
 
-  const calculateSubtotal = () => {
-    return cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
-  };
+const getSubtotal = () => {
+  return cartsData.reduce((total, product) => total + product.product.price * product.quantity, 0);
+};
+  
+  // const calculateTax = (subtotal) => {
+  //   return subtotal * 0.12; // Assuming 12% tax rate
+  // };
 
-  const calculateTax = (subtotal) => {
-    return subtotal * 0.12; // Assuming 12% tax rate
-  };
-
-  const subtotal = calculateSubtotal();
-  const tax = calculateTax(subtotal);
-  const total = subtotal + tax;
+  // const subtotal = calculateSubtotal();
+  // const tax = calculateTax(subtotal);
+  // const total = subtotal + tax;
 
   if (isLoading) {
     return <h1>Loading Cart...</h1>;
@@ -126,6 +126,7 @@ function Carts() {
               {/* Cart Items */}
               <div className="space-y-4">
                 {cartsData?.map((item) => {
+                  console.log("Cart Item: ", item);
                   const product = item?.product
                   return (
                     <div
@@ -133,7 +134,7 @@ function Carts() {
                       className="flex items-center gap-4 p-4 bg-gray-700 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300"
                     >
                       <img
-                        src={product?.image}
+                        src={product?.images[0].img}
                         alt={product?.name}
                         className="w-20 h-20 sm:w-24 sm:h-24 rounded-md object-cover border border-gray-600"
                       />
@@ -147,19 +148,19 @@ function Carts() {
                         <div className="flex items-center gap-2 mt-2">
                           <button
                             onClick={() =>
-                              updateQuantity(item.id, product?.quantity - 1)
+                              updateQuantity(item.id, item?.quantity - 1)
                             }
                             className="px-2 py-1 bg-gray-600 rounded hover:bg-gray-500 text-white"
-                            disabled={product?.quantity <= 1}
+                            disabled={item?.quantity <= 1}
                           >
                             -
                           </button>
                           <span className="text-gray-300">
-                            {product?.quantity}
+                            {item?.quantity}
                           </span>
                           <button
                             onClick={() =>
-                              updateQuantity(product?.id, product?.quantity + 1)
+                              updateQuantity(ittem?.id, item?.quantity + 1)
                             }
                             className="px-2 py-1 bg-gray-600 rounded hover:bg-gray-500 text-white"
                           >
@@ -169,10 +170,10 @@ function Carts() {
                       </div>
                       <div className="text-right">
                         <p className="text-gray-300 font-semibold">
-                          ₱{(product?.price * product?.quantity).toFixed(2)}
+                          ₱{(product?.price * item?.quantity).toFixed(2)}
                         </p>
                         <button
-                          onClick={() => removeItem(product?.id)}
+                          onClick={() => removeItem(item?.id)}
                           className="mt-2 text-red-400 hover:text-red-300 flex items-center text-sm"
                         >
                           <Trash2 size={18} className="mr-1" /> Remove
@@ -188,25 +189,15 @@ function Carts() {
                 <h3 className="text-xl font-semibold text-white mb-4">
                   Order Summary
                 </h3>
-                <div className="space-y-2 text-gray-300">
-                  <div className="flex justify-between">
-                    <span>Subtotal</span>
-                    <span>₱{subtotal.toFixed(2)}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>Tax (12%)</span>
-                    <span>₱{tax.toFixed(2)}</span>
-                  </div>
                   <div className="flex justify-between font-semibold text-white border-t border-gray-600 pt-2 mt-2">
                     <span>Total</span>
-                    <span>₱{total.toFixed(2)}</span>
+                    <span>₱{getSubtotal().toFixed(2)}</span>
                   </div>
                 </div>
                 <button className="w-full mt-4 px-6 py-2 bg-orange-600 hover:bg-orange-700 text-white font-semibold rounded-lg shadow-md transition-colors duration-300 flex items-center justify-center gap-2">
                   Proceed to Checkout <ChevronRight size={20} />
                 </button>
               </div>
-            </div>
           ) : (
             <p className="text-gray-400 text-lg">
               Your Filipiniana cart is empty.

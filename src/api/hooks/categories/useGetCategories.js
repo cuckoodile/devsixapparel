@@ -35,7 +35,7 @@ async function useGeCategoriesData() {
     const res = await response.json();
 
     console.log("Categories data fetched successfully:", res);
-    return res.data;
+    return res.data ?? res ?? null;
   } catch (error) {
     throw new Error(`Failed to fetch categories: ${error.message}`);
   }
