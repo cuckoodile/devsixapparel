@@ -12,9 +12,11 @@ import {
 } from "lucide-react";
 import useGetProducts from "../api/hooks/products/useGetProducts"; // Adjust the import path as necessary
 import useGetCategories from "../api/hooks/categories/useGetCategories";
+import { useNavigate } from "react-router-dom";
 export default function Allproducts() {
   const { data: productsData, isLoading, isError } = useGetProducts();
   const { data: categoriesData } = useGetCategories();
+  
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [sortBy, setSortBy] = useState("featured");
@@ -184,6 +186,8 @@ export default function Allproducts() {
     { value: "price-high", label: "Price: High to Low" },
     { value: "rating", label: "Highest Rated" },
   ];
+  
+  const navigate = useNavigate();
 
   useEffect(() => {
     let filtered = productsData ? [...productsData] : [];
@@ -229,8 +233,8 @@ export default function Allproducts() {
     setFilteredProducts(filtered);
   }, [searchTerm, selectedCategory, sortBy, productsData]);
 
-  const navigate = (path) => {
-    console.log(`Navigating to: ${path}`);
+  const handleNavigate = (path) => {
+    navigate(path);
   };
 
   const addToCart = (productId) => {
@@ -399,6 +403,7 @@ export default function Allproducts() {
               {filteredProducts?.map((product) => (
                 <div
                   key={product.id}
+                  onClick={() => handleNavigate(`/productdetails/${product.id}`)}
                   className={`group bg-gray-800 rounded-xl overflow-hidden border border-gray-700 hover:border-orange-500/50 transition-all duration-300 hover:shadow-2xl hover:shadow-orange-500/10 ${
                     viewMode === "list" ? "flex" : ""
                   }`}
@@ -435,7 +440,7 @@ export default function Allproducts() {
                     <div className="absolute top-3 right-3 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                       <button
                         onClick={() =>
-                          navigate(`/productdetails/${product.id}`)
+                          handleNavigate(`/productdetails/${product.id}`)
                         }
                         className="p-2 rounded-full bg-black/50 text-white hover:bg-orange-500 transition-colors backdrop-blur-sm"
                       >

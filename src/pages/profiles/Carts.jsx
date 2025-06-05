@@ -87,10 +87,13 @@ function Carts() {
     deleteCartMutation.mutate({token:userToken ,id:itemId});
   };
 
-const getSubtotal = () => {
-  return cartsData.reduce((total, product) => total + product.product.price * product.quantity, 0);
-};
-  
+  const getSubtotal = () => {
+    return cartsData.reduce(
+      (total, product) => total + product.product.price * product.quantity,
+      0
+    );
+  };
+
   // const calculateTax = (subtotal) => {
   //   return subtotal * 0.12; // Assuming 12% tax rate
   // };
@@ -130,7 +133,7 @@ const getSubtotal = () => {
               <div className="space-y-4">
                 {cartsData?.map((item) => {
                   console.log("Cart Item: ", item);
-                  const product = item?.product
+                  const product = item?.product;
                   return (
                     <div
                       key={item?.id}
@@ -145,9 +148,7 @@ const getSubtotal = () => {
                         <h3 className="text-lg font-semibold text-white">
                           {product?.name}
                         </h3>
-                        <p className="text-gray-300">
-                          ₱{product?.price} each
-                        </p>
+                        <p className="text-gray-300">₱{product?.price} each</p>
                         <div className="flex items-center gap-2 mt-2">
                           <button
                             onClick={() =>
@@ -193,15 +194,15 @@ const getSubtotal = () => {
                 <h3 className="text-xl font-semibold text-white mb-4">
                   Order Summary
                 </h3>
-                  <div className="flex justify-between font-semibold text-white border-t border-gray-600 pt-2 mt-2">
-                    <span>Total</span>
-                    <span>₱{getSubtotal().toFixed(2)}</span>
-                  </div>
+                <div className="flex justify-between font-semibold text-white border-t border-gray-600 pt-2 mt-2">
+                  <span>Total</span>
+                  <span>₱{getSubtotal().toFixed(2)}</span>
                 </div>
-                <button className="w-full mt-4 px-6 py-2 bg-orange-600 hover:bg-orange-700 text-white font-semibold rounded-lg shadow-md transition-colors duration-300 flex items-center justify-center gap-2">
-                  Proceed to Checkout <ChevronRight size={20} />
-                </button>
               </div>
+              <button className="w-full mt-4 px-6 py-2 bg-orange-600 hover:bg-orange-700 text-white font-semibold rounded-lg shadow-md transition-colors duration-300 flex items-center justify-center gap-2">
+                Proceed to Checkout <ChevronRight size={20} />
+              </button>
+            </div>
           ) : (
             <p className="text-gray-400 text-lg">
               Your Filipiniana cart is empty.

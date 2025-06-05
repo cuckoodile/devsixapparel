@@ -17,17 +17,23 @@ import {
 } from "lucide-react";
 import { useParams } from "react-router-dom";
 import useGetProductID from "../api/hooks/products/useGetProductID";
-
+import useCreateCart from "../api/hooks/carts/usePostCart";
 export default function Productdetails() {
+  const postCartMutation = useCreateCart();
+  const userToken = sessionStorage.getItem("user");
   const productId = useParams().id;
   const {
     data: productDetails,
     isLoading,
     isError,
   } = useGetProductID(productId);
+
   const [product, setProduct] = useState({
     inStock: true,
   });
+
+  // const { mutation: addToCart } = usePostCart();
+
   const [selectedImage, setSelectedImage] = useState(0);
   const [selectedSize, setSelectedSize] = useState("");
   const [selectedColor, setSelectedColor] = useState("");
@@ -89,21 +95,21 @@ export default function Productdetails() {
   //     }
   //   };
 
-  useEffect(() => {
-    if (productDetails) {
-      const initialColor = productDetails?.colors[0].color;
-      setSelectedColor(initialColor);
+  // useEffect(() => {
+  //   if (productDetails) {
+  //     const initialColor = productDetails?.colors[0].color;
+  //     setSelectedColor(initialColor);
 
-      const defaultSize = productDetails?.sizes.find(
-        (sizes) => sizes.name === "M" && sizes.inStock
-      );
-      setSelectedSize(
-        defaultSize?.name ||
-          productDetails?.sizes.find((size) => size.inStock)?.name ||
-          ""
-      );
-    }
-  }, [productDetails]);
+  //     const defaultSize = productDetails?.sizes.find(
+  //       (sizes) => sizes.name === "M" && sizes.inStock
+  //     );
+  //     setSelectedSize(
+  //       defaultSize?.name ||
+  //         productDetails?.sizes.find((size) => size.inStock)?.name ||
+  //         ""
+  //     );
+  //   }
+  // }, [productDetails]);
 
   const handleQuantityChange = (action) => {
     if (action === "increase" && quantity < productDetails?.stockCount) {
@@ -113,22 +119,19 @@ export default function Productdetails() {
     }
   };
 
-  // const handleAddToCart = () => {
-  //   if (!product || !selectedSize || !selectedColor) {
-  //     alert("Please select a size and color before adding to cart.");
-  //     return;
-  //   }
-
-  //   console.log("Adding to cart:", {
-  //     productId: product.id,
-  //     quantity,
-  //     selectedSize,
-  //     selectedColor,
-  //   });
-  //   // Simulate adding to cart successfully
-  //   setAddedToCart(true);
-  //   setTimeout(() => setAddedToCart(false), 3000); // Reset after 3 seconds
-  // };
+  const handleAddToCart = () => {
+    if (!productDetails || !productDetails.id) {
+      alert("No product id.");
+      return;
+    }
+    postCartMutation.mutate({
+      data: {
+        product: productDetails.id,
+        quantity: quantity,
+      },
+      token: userToken,
+    });
+  };
 
   const reviews = [
     {
@@ -177,7 +180,7 @@ export default function Productdetails() {
   // product.colors.find((c) => c.name === selectedColor)?.inStock &&
   // product.sizes.find((s) => s.name === selectedSize)?.inStock;
 
-  console.log("ProductDetails: ", productDetails);
+  // console.log("ProductDetails: ", productDetails);
 
   return (
     <div className="min-h-screen w-screen bg-gray-900 text-white">
@@ -189,7 +192,7 @@ export default function Productdetails() {
               {/* Main Image */}
               <div className="relative aspect-[4/4] bg-gray-800 rounded-xl overflow-hidden">
                 <img
-                  // src={productDetails?.images[0]}
+                  src={productDetails?.images[selectedImage].img}
                   alt={productDetails?.name}
                   className="w-full h-full object-cover"
                 />
@@ -198,32 +201,6 @@ export default function Productdetails() {
                     SALE
                   </span>
                 )}
-
-                {/* Navigation Arrows */}
-                {/* {productDetails?.images.length > 0 && (
-                  <>
-                    <button
-                      onClick={() =>
-                        setSelectedImage((prev) =>
-                          prev === 0 ? product.images.length - 1 : prev - 1
-                        )
-                      }
-                      className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition-colors"
-                    >
-                      <ChevronLeft size={20} />
-                    </button>
-                    <button
-                      onClick={() =>
-                        setSelectedImage((prev) =>
-                          prev === product?.images.length - 1 ? 0 : prev + 1
-                        )
-                      }
-                      className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition-colors"
-                    >
-                      <ChevronRight size={20} />
-                    </button>
-                  </>
-                )} */}
               </div>
 
               {/* Thumbnail Images */}
@@ -239,7 +216,7 @@ export default function Productdetails() {
                     }`}
                   >
                     <img
-                      src={image}
+                      src={productDetails?.images[index].img}
                       alt={`${product.name} ${index + 1}`}
                       className="w-full h-full object-cover"
                     />
@@ -418,13 +395,13 @@ export default function Productdetails() {
 
                 {/* Action Buttons */}
                 <div className="flex gap-3">
-                  {/* <button
+                  <button
                     onClick={handleAddToCart}
-                    disabled={
-                      !isCurrentSelectionInStock ||
-                      !selectedSize ||
-                      !selectedColor
-                    }
+                    // disabled={
+                    //   !isCurrentSelectionInStock ||
+                    //   !selectedSize ||
+                    //   !selectedColor
+                    // }
                     className={`flex-1 bg-orange-500 hover:bg-orange-600 disabled:bg-gray-600 disabled:cursor-not-allowed text-white py-3 px-6 rounded-lg font-medium transition-colors flex items-center justify-center gap-2 ${
                       addedToCart ? "bg-green-500" : ""
                     }`}
@@ -439,7 +416,7 @@ export default function Productdetails() {
                         Add to Cart
                       </>
                     )}
-                  </button> */}
+                  </button>
                   <button className="p-3 rounded-lg border border-gray-600 text-gray-400 hover:border-orange-500 hover:text-orange-500 transition-colors">
                     <Share2 size={18} />
                   </button>

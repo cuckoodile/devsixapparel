@@ -33,7 +33,7 @@ export default function useGetProductDataID(id) {
       const res = await response.json();
 
       console.log("Product ID data fetched successfully:", res[0]);
-      return res.data ?? res[0] ?? null;
+      return res[0];
     } catch (error) {
       throw new Error(`Failed to fetch product ID: ${error.message}`);
     }
