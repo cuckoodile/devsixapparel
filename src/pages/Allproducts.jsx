@@ -410,7 +410,7 @@ export default function Allproducts() {
                     }`}
                   >
                     <img
-                      src={product.image}
+                      src={product.images[0]?.img}
                       alt={product.name}
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                       loading="lazy"
